@@ -3,6 +3,8 @@ package com.example.testapp;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -10,6 +12,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
+
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -92,8 +97,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public interface MyApi {
-        @GET("/cgi-bin/timetable_export.cgi?req_type=free_rooms_list&lesson=2&req_format=json&coding_mode=UTF8&bs=ok")
-        Call<Root> getRooms();
+        @GET("/cgi-bin/timetable_export.cgi")
+        Call<Root> getRooms(@Query("req_type") String req_type,
+                            @Query("lesson") int lesson,
+                            @Query("req_format") String req_format,
+                            @Query("coding_mode") String coding_mode,
+                            @Query("bs") String bs);
     }
 
     @Override
@@ -101,6 +110,56 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Button button1 = findViewById(R.id.button1);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadRooms(1);
+            }
+        });
+
+        Button button2 = findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadRooms(2);
+            }
+        });
+
+        Button button3 = findViewById(R.id.button3);
+        button3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadRooms(3);
+            }
+        });
+
+        Button button4 = findViewById(R.id.button4);
+        button4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadRooms(4);
+            }
+        });
+
+        Button button5 = findViewById(R.id.button5);
+        button5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadRooms(5);
+            }
+        });
+
+        Button button6 = findViewById(R.id.button6);
+        button6.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadRooms(6);
+            }
+        });
+    }
+
+    private void loadRooms(int lesson) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://195.162.83.28")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -108,7 +167,7 @@ public class MainActivity extends AppCompatActivity {
 
         MyApi api = retrofit.create(MyApi.class);
 
-        Call<Root> call = api.getRooms();
+        Call<Root> call = api.getRooms("free_rooms_list", lesson, "json", "UTF8", "ok");
         call.enqueue(new Callback<Root>() {
             @Override
             public void onResponse(Call<Root> call, Response<Root> response) {
@@ -119,12 +178,15 @@ public class MainActivity extends AppCompatActivity {
 
                 Root root = response.body();
                 List<FreeRooms> freeRoomsList = root.getPsrozklad_export().getFree_rooms();
+
+                TextView textView = findViewById(R.id.textView);
+                textView.setText("");
+
                 for (FreeRooms freeRooms : freeRoomsList) {
                     List<Room> rooms = freeRooms.getRooms();
                     for (Room room : rooms) {
                         String roomName = room.getName();
                         Log.d(TAG, "Room: " + roomName);
-                        TextView textView = findViewById(R.id.textView);
                         textView.append(roomName + "\n");
                     }
                 }
