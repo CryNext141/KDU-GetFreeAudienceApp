@@ -192,10 +192,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            @Override
-            public void onFailure(Call<Root> call, Throwable t) {
-                Log.d(TAG, "onFailure: " + t.getMessage());
-            }
+
         });
     }
 }
