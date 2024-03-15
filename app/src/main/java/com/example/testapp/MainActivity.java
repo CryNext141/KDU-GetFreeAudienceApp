@@ -186,7 +186,6 @@ public class MainActivity extends AppCompatActivity {
                     List<Room> rooms = freeRooms.getRooms();
                     for (Room room : rooms) {
                         String roomName = room.getName();
-                        Log.d(TAG, "Room: " + roomName);
                         textView.append(roomName + "\n");
                     }
                 }
