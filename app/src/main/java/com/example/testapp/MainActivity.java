@@ -192,6 +192,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
+            @Override
+            public void onFailure(Call<Root> call, Throwable t) {
+
+            }
+
 
         });
     }
