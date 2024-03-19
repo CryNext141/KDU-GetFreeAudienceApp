@@ -2,12 +2,16 @@ package com.example.freeaudiences;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -22,15 +26,15 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalTime;
 
 public class MainActivity extends AppCompatActivity {
-
-    private static final String TAG = "MainActivity";
-
     public static class Room {
         private String name;
+        private String type;
+        private String comment;
 
         public String getName() {
             return name;
@@ -38,6 +42,22 @@ public class MainActivity extends AppCompatActivity {
 
         public void setName(String name) {
             this.name = name;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public String getComment() {
+            return comment;
+        }
+
+        public void setComment(String comment) {
+            this.comment = comment;
         }
     }
 
@@ -111,6 +131,45 @@ public class MainActivity extends AppCompatActivity {
                             @Query("req_format") String req_format,
                             @Query("coding_mode") String coding_mode,
                             @Query("bs") String bs);
+    }
+
+    public static class RoomViewHolder extends RecyclerView.ViewHolder {
+        TextView audience, type, comment;
+
+        public RoomViewHolder(View itemView) {
+            super(itemView);
+            audience = itemView.findViewById(R.id.audience);
+            type = itemView.findViewById(R.id.type);
+            comment = itemView.findViewById(R.id.comment);
+        }
+    }
+
+    public static class RoomAdapter extends RecyclerView.Adapter<RoomViewHolder> {
+        private List<Room> rooms;
+
+        public RoomAdapter(List<Room> rooms) {
+            this.rooms = rooms;
+        }
+
+        @Override
+        public RoomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.room_item, parent, false);
+            return new RoomViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(RoomViewHolder holder, int position) {
+            Room room = rooms.get(position);
+            String roomNumber = room.getName().replace("ауд.", "").trim();
+            holder.audience.setText(roomNumber);
+            holder.type.setText(room.getType());
+            holder.comment.setText(room.getComment());
+        }
+
+        @Override
+        public int getItemCount() {
+            return rooms.size();
+        }
     }
 
     @Override
@@ -213,6 +272,7 @@ public class MainActivity extends AppCompatActivity {
         return !currentTime.isBefore(startTime) && !currentTime.isAfter(endTime);
     }
 
+
     private void loadRooms(int lesson) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://195.162.83.28")
@@ -226,23 +286,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Root> call, Response<Root> response) {
                 if (!response.isSuccessful()) {
-                    Log.d(TAG, "onResponse: Code: " + response.code());
                     return;
                 }
                 Root root = response.body();
                 List<FreeRooms> freeRoomsList = root.getPsrozklad_export().getFree_rooms();
 
-                TextView textView = findViewById(R.id.textView);
-                textView.setText("");
+                RecyclerView recyclerView = findViewById(R.id.recyclerView);
+                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+
+                List<Room> allRooms = new ArrayList<>();
 
                 for (FreeRooms freeRooms : freeRoomsList) {
                     List<Room> rooms = freeRooms.getRooms();
-                    for (Room room : rooms) {
-                        String roomName = room.getName();
-                        textView.append(roomName + "\n");
-                    }
+                    allRooms.addAll(rooms);
                 }
+
+                recyclerView.setAdapter(new RoomAdapter(allRooms));
             }
+
             @Override
             public void onFailure(Call<Root> call, Throwable t) {
             }

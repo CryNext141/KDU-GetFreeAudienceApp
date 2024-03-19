@@ -13,10 +13,7 @@
         android:layout_height="60dp"
         android:background="#2f303a"
         android:elevation="10dp"
-        android:padding="10dp"
-        android:text=""
-        android:textColor="#e2e1ef"
-        android:textSize="20sp" />
+        android:padding="10dp"/>
 
     <View
         android:layout_width="match_parent"
@@ -111,16 +108,12 @@
         </LinearLayout>
     </LinearLayout>
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <include layout="@layout/room_header" />
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="16sp"
-            android:padding="10dp" />
-    </ScrollView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
 
 </LinearLayout>
