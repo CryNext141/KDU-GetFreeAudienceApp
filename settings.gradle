@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "TestApp"
+rootProject.name = "FreeAudiences"
 include ':app'

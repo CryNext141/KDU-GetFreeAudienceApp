@@ -1,20 +1,15 @@
-package com.example.testapp;
+package com.example.freeaudiences;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.RippleDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
@@ -25,11 +20,10 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-import java.util.Calendar;
 import java.util.List;
+import java.time.LocalTime;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -124,9 +118,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Calendar calendar = Calendar.getInstance();
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
+        LocalTime currentTime = LocalTime.now();
 
         ColorStateList rippleColor = ColorStateList.valueOf(Color.argb(255, 29,171, 222));
 
@@ -136,6 +128,11 @@ public class MainActivity extends AppCompatActivity {
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.MainColor));
 
         MaterialButton button1 = findViewById(R.id.button1);
+        MaterialButton button2 = findViewById(R.id.button2);
+        MaterialButton button3 = findViewById(R.id.button3);
+        MaterialButton button4 = findViewById(R.id.button4);
+        MaterialButton button5 = findViewById(R.id.button5);
+        MaterialButton button6 = findViewById(R.id.button6);
 
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,13 +140,6 @@ public class MainActivity extends AppCompatActivity {
                 loadRooms(1);
             }
         });
-        if (hour >= 8 && hour < 10) {
-            button1.setBackgroundColor(Color.argb(255, 223,224,255));
-            button1.setTextColor(Color.argb(255, 94,103,163));
-            button1.setRippleColor(rippleColor);        }
-        //////
-
-        MaterialButton button2 = findViewById(R.id.button2);
 
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -158,64 +148,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (hour >= 10 && hour <= 11) {
-
-            if (minute <=20){
-                button2.setBackgroundColor(Color.argb(255, 223,224,255));
-                button2.setTextColor(Color.argb(255, 94,103,163));
-                button2.setRippleColor(rippleColor);
-            }
-        }
-
-        MaterialButton button3 = findViewById(R.id.button3);
-
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadRooms(3);
             }
         });
-
-        if (hour >= 12 && hour <= 13) {
-            if (minute < 20){
-                button3.setBackgroundColor(Color.argb(255, 223,224,255));
-                button3.setTextColor(Color.argb(255, 94,103,163));
-                button3.setRippleColor(rippleColor);
-            }
-        }
-
-        MaterialButton button4 = findViewById(R.id.button4);
         button4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadRooms(4);
             }
         });
-
-        if (hour >= 13 && hour < 15) {
-            button4.setBackgroundColor(Color.argb(255, 223,224,255));
-            button4.setTextColor(Color.argb(255, 94,103,163));
-            button4.setRippleColor(rippleColor);        }
-
-        MaterialButton button5 = findViewById(R.id.button5);
-
         button5.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loadRooms(5);
             }
         });
-
-        if (hour >= 15 && hour <= 16) {
-            if (minute < 30){
-                button5.setBackgroundColor(Color.argb(255, 223,224,255));
-                button5.setTextColor(Color.argb(255, 94,103,163));
-                button5.setRippleColor(rippleColor);
-            }
-        }
-
-        MaterialButton button6 = findViewById(R.id.button6);
-
         button6.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,11 +173,44 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (hour >= 16 && hour < 18) {
+        if (isTimeInRange(currentTime, LocalTime.of(8, 30), LocalTime.of(9, 50))) {
+            button1.setBackgroundColor(Color.argb(255, 223,224,255));
+            button1.setTextColor(Color.argb(255, 94,103,163));
+            button1.setRippleColor(rippleColor);
+        }
+        else if (isTimeInRange(currentTime, LocalTime.of(10, 0), LocalTime.of(11, 20))) {
+            button2.setBackgroundColor(Color.argb(255, 223,224,255));
+            button2.setTextColor(Color.argb(255, 94,103,163));
+            button2.setRippleColor(rippleColor);
+        }
+        else if (isTimeInRange(currentTime, LocalTime.of(12, 0), LocalTime.of(13, 20))) {
+            button3.setBackgroundColor(Color.argb(255, 223,224,255));
+            button3.setTextColor(Color.argb(255, 94,103,163));
+            button3.setRippleColor(rippleColor);
+        }
+        else if (isTimeInRange(currentTime, LocalTime.of(13, 30), LocalTime.of(14, 50))) {
+            button4.setBackgroundColor(Color.argb(255, 223,224,255));
+            button4.setTextColor(Color.argb(255, 94,103,163));
+            button4.setRippleColor(rippleColor);
+        }
+        else if (isTimeInRange(currentTime, LocalTime.of(15, 10), LocalTime.of(16, 30))) {
+            button5.setBackgroundColor(Color.argb(255, 223, 224, 255));
+            button5.setTextColor(Color.argb(255, 94, 103, 163));
+            button5.setRippleColor(rippleColor);
+        }
+        else if (isTimeInRange(currentTime, LocalTime.of(16, 40), LocalTime.of(18, 0))) {
             button6.setBackgroundColor(Color.argb(255, 223,224,255));
             button6.setTextColor(Color.argb(255, 94,103,163));
             button6.setRippleColor(rippleColor);
         }
+        else if (isTimeInRange(currentTime, LocalTime.of(18, 35), LocalTime.of(18, 40))) {
+            button6.setBackgroundColor(Color.argb(255, 223,224,255));
+            button6.setTextColor(Color.argb(255, 94,103,163));
+            button6.setRippleColor(rippleColor);
+        }
+    }
+    private boolean isTimeInRange(LocalTime currentTime, LocalTime startTime, LocalTime endTime) {
+        return !currentTime.isBefore(startTime) && !currentTime.isAfter(endTime);
     }
 
     private void loadRooms(int lesson) {
@@ -246,7 +229,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "onResponse: Code: " + response.code());
                     return;
                 }
-
                 Root root = response.body();
                 List<FreeRooms> freeRoomsList = root.getPsrozklad_export().getFree_rooms();
 
