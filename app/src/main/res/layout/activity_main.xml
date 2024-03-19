@@ -11,14 +11,14 @@
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#2f303a"
+        android:background="#434453"
         android:elevation="10dp"
         android:padding="10dp"/>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="#434453" />
+        android:background="#2f303a" />
 
     <LinearLayout
         android:layout_width="match_parent"

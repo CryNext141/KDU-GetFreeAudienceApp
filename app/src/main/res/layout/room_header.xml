@@ -7,7 +7,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#434453"/>
+        android:background="#2f303a"/>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,7 +15,7 @@
         android:orientation="horizontal"
         android:padding="10dp"
         android:gravity="center_vertical"
-        android:background="#2f303a">
+        android:background="#434453">
 
         <TextView
             android:layout_width="0dp"
@@ -48,5 +48,5 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#434453"/>
+        android:background="#2f303a"/>
 </LinearLayout>

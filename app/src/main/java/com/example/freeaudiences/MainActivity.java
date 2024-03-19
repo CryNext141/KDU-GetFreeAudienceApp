@@ -184,7 +184,7 @@ public class MainActivity extends AppCompatActivity {
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        window.setStatusBarColor(ContextCompat.getColor(this, R.color.MainColor));
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.HeaderColor));
 
         MaterialButton button1 = findViewById(R.id.button1);
         MaterialButton button2 = findViewById(R.id.button2);
