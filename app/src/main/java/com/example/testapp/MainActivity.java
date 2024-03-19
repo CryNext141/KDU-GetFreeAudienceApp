@@ -1,15 +1,19 @@
 package com.example.testapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -122,8 +126,14 @@ public class MainActivity extends AppCompatActivity {
 
         Calendar calendar = Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+
         ColorStateList rippleColor = ColorStateList.valueOf(Color.argb(255, 29,171, 222));
 
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.MainColor));
 
         MaterialButton button1 = findViewById(R.id.button1);
 
@@ -148,10 +158,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (hour >= 10 && hour < 11) {
-            button2.setBackgroundColor(Color.argb(255, 223,224,255));
-            button2.setTextColor(Color.argb(255, 94,103,163));
-            button2.setRippleColor(rippleColor);        }
+        if (hour >= 10 && hour <= 11) {
+
+            if (minute <=20){
+                button2.setBackgroundColor(Color.argb(255, 223,224,255));
+                button2.setTextColor(Color.argb(255, 94,103,163));
+                button2.setRippleColor(rippleColor);
+            }
+        }
 
         MaterialButton button3 = findViewById(R.id.button3);
 
@@ -162,10 +176,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (hour >= 12 && hour < 13) {
-            button3.setBackgroundColor(Color.argb(255, 223,224,255));
-            button3.setTextColor(Color.argb(255, 94,103,163));
-            button3.setRippleColor(rippleColor);        }
+        if (hour >= 12 && hour <= 13) {
+            if (minute < 20){
+                button3.setBackgroundColor(Color.argb(255, 223,224,255));
+                button3.setTextColor(Color.argb(255, 94,103,163));
+                button3.setRippleColor(rippleColor);
+            }
+        }
 
         MaterialButton button4 = findViewById(R.id.button4);
         button4.setOnClickListener(new View.OnClickListener() {
@@ -175,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (hour >= 13 && hour < 14) {
+        if (hour >= 13 && hour < 15) {
             button4.setBackgroundColor(Color.argb(255, 223,224,255));
             button4.setTextColor(Color.argb(255, 94,103,163));
             button4.setRippleColor(rippleColor);        }
@@ -189,10 +206,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        if (hour >= 15 && hour < 16) {
-            button5.setBackgroundColor(Color.argb(255, 223,224,255));
-            button5.setTextColor(Color.argb(255, 94,103,163));
-            button5.setRippleColor(rippleColor);
+        if (hour >= 15 && hour <= 16) {
+            if (minute < 30){
+                button5.setBackgroundColor(Color.argb(255, 223,224,255));
+                button5.setTextColor(Color.argb(255, 94,103,163));
+                button5.setRippleColor(rippleColor);
+            }
         }
 
         MaterialButton button6 = findViewById(R.id.button6);
@@ -242,13 +261,9 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-
             @Override
             public void onFailure(Call<Root> call, Throwable t) {
-
             }
-
-
         });
     }
 }
