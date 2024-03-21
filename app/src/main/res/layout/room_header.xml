@@ -21,27 +21,27 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Audience"
-            android:textSize="18sp"
-            android:textColor="#FFFFFF"
+            android:text="@string/audience"
+            android:textSize="16sp"
+            android:textColor="@color/textColors"
             android:gravity="center" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Type"
-            android:textSize="18sp"
-            android:textColor="#FFFFFF"
+            android:text="@string/type"
+            android:textSize="16sp"
+            android:textColor="@color/textColors"
             android:gravity="center" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Comment"
-            android:textSize="18sp"
-            android:textColor="#FFFFFF"
+            android:text="@string/comment"
+            android:textSize="16sp"
+            android:textColor="@color/textColors"
             android:gravity="center" />
     </LinearLayout>
 

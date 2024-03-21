@@ -7,13 +7,33 @@
     android:orientation="vertical"
     android:background="#000000">
 
-    <TextView
-        android:id="@+id/header"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#434453"
-        android:elevation="10dp"
-        android:padding="10dp"/>
+        android:background="@drawable/gradient_background"
+        android:elevation="10dp">
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="70dp"
+            android:layout_height="52dp"
+            android:layout_centerVertical="true"
+            android:padding="5dp"
+            android:paddingStart="20dp"
+            android:src="@drawable/ic_action_ukdlogo" />
+
+        <TextView
+            android:id="@+id/header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/logo"
+            android:padding="2dp"
+            android:text="@string/headerText"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/textColors" />
+    </RelativeLayout>
 
     <View
         android:layout_width="match_parent"
@@ -23,7 +43,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:baselineAligned="false">
 
         <LinearLayout
             android:layout_width="0dp"
@@ -37,30 +58,29 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 app:backgroundTint="#2f303a"
-                android:text="Clasess 1\n8:30 - 9:50"
-                android:textColor="#e2e1ef"
+                android:text="@string/clasess_1_n8_30_9_50"
+                android:textColor="@color/textColors"
                 app:rippleColor="#4F5163"
                 app:cornerRadius="20dp"
                 tools:ignore="VisualLintButtonSize" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/button2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Clasess 2\n10:00 - 11:20"
-                android:textColor="#e2e1ef"
-                app:backgroundTint="#2f303a"
-                app:rippleColor="#4F5163"
-                app:cornerRadius="20dp"
-                android:layout_margin="10dp"
-                android:layout_marginTop="10dp" />
-
-            <com.google.android.material.button.MaterialButton
                 android:id="@+id/button3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Clasess 3\n12:00 - 13:20"
-                android:textColor="#e2e1ef"
+                android:text="@string/clasess_3_n12_00_13_20"
+                android:textColor="@color/textColors"
+                app:backgroundTint="#2f303a"
+                app:rippleColor="#4F5163"
+                app:cornerRadius="20dp"
+                android:layout_margin="10dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/clasess_5_n15_10_16_30"
+                android:textColor="@color/textColors"
                 app:backgroundTint="#2f303a"
                 app:rippleColor="#4F5163"
                 app:cornerRadius="20dp"
@@ -74,22 +94,23 @@
             android:orientation="vertical">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/button4"
+                android:id="@+id/button2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Clasess 4\n13:30 - 14:50"
-                android:textColor="#e2e1ef"
+                android:text="@string/clasess_2_n10_00_11_20"
+                android:textColor="@color/textColors"
                 app:backgroundTint="#2f303a"
                 app:rippleColor="#4F5163"
                 app:cornerRadius="20dp"
-                android:layout_margin="10dp" />
+                android:layout_margin="10dp"
+                android:layout_marginTop="10dp" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/button5"
+                android:id="@+id/button4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Clasess 5\n15:10 - 16:30"
-                android:textColor="#e2e1ef"
+                android:text="@string/clasess_4_n13_30_14_50"
+                android:textColor="@color/textColors"
                 app:backgroundTint="#2f303a"
                 app:rippleColor="#4F5163"
                 app:cornerRadius="20dp"
@@ -99,8 +120,8 @@
                 android:id="@+id/button6"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Clasess 6\n16:40 - 18:00"
-                android:textColor="#e2e1ef"
+                android:text="@string/clasess_6_n16_40_18_00"
+                android:textColor="@color/textColors"
                 app:backgroundTint="#2f303a"
                 app:rippleColor="#4F5163"
                 app:cornerRadius="20dp"
