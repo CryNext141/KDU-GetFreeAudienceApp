@@ -1,5 +1,6 @@
 package com.example.freeaudiences;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -8,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,10 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
         public String getName() {
             return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
         }
 
         public String getType() {
@@ -145,12 +141,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static class RoomAdapter extends RecyclerView.Adapter<RoomViewHolder> {
-        private List<Room> rooms;
+        private final List<Room> rooms;
 
         public RoomAdapter(List<Room> rooms) {
             this.rooms = rooms;
         }
 
+        @NonNull
         @Override
         public RoomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.room_item, parent, false);
@@ -193,44 +190,14 @@ public class MainActivity extends AppCompatActivity {
         MaterialButton button5 = findViewById(R.id.button5);
         MaterialButton button6 = findViewById(R.id.button6);
 
-        button1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadRooms(1);
-            }
-        });
+        button1.setOnClickListener(v -> loadRooms(1));
 
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadRooms(2);
-            }
-        });
+        button2.setOnClickListener(v -> loadRooms(2));
 
-        button3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadRooms(3);
-            }
-        });
-        button4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadRooms(4);
-            }
-        });
-        button5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadRooms(5);
-            }
-        });
-        button6.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadRooms(6);
-            }
-        });
+        button3.setOnClickListener(v -> loadRooms(3));
+        button4.setOnClickListener(v -> loadRooms(4));
+        button5.setOnClickListener(v -> loadRooms(5));
+        button6.setOnClickListener(v -> loadRooms(6));
 
         if (isTimeInRange(currentTime, LocalTime.of(8, 30), LocalTime.of(9, 50))) {
             button1.setBackgroundColor(Color.argb(255, 223,224,255));
@@ -284,11 +251,12 @@ public class MainActivity extends AppCompatActivity {
         Call<Root> call = api.getRooms("free_rooms_list", lesson, "json", "UTF8", "ok");
         call.enqueue(new Callback<Root>() {
             @Override
-            public void onResponse(Call<Root> call, Response<Root> response) {
+            public void onResponse(@NonNull Call<Root> call, @NonNull Response<Root> response) {
                 if (!response.isSuccessful()) {
                     return;
                 }
                 Root root = response.body();
+                assert root != null;
                 List<FreeRooms> freeRoomsList = root.getPsrozklad_export().getFree_rooms();
 
                 RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -305,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<Root> call, Throwable t) {
+            public void onFailure(@NonNull Call<Root> call, @NonNull Throwable t) {
             }
         });
     }
