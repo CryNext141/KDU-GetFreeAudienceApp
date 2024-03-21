@@ -1,4 +1,4 @@
-package com.example.freeaudiences;
+package com.example.roomify;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +17,6 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;

@@ -1,4 +1,4 @@
-package com.example.freeaudiences;
+package com.example.roomify;
 
 import org.junit.Test;
 
