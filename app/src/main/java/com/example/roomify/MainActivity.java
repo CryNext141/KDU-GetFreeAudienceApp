@@ -190,9 +190,7 @@ public class MainActivity extends AppCompatActivity {
         MaterialButton button6 = findViewById(R.id.button6);
 
         button1.setOnClickListener(v -> loadRooms(1));
-
         button2.setOnClickListener(v -> loadRooms(2));
-
         button3.setOnClickListener(v -> loadRooms(3));
         button4.setOnClickListener(v -> loadRooms(4));
         button5.setOnClickListener(v -> loadRooms(5));
@@ -238,7 +236,6 @@ public class MainActivity extends AppCompatActivity {
         return !currentTime.isBefore(startTime) && !currentTime.isAfter(endTime);
     }
 
-
     private void loadRooms(int lesson) {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://195.162.83.28")
@@ -270,7 +267,6 @@ public class MainActivity extends AppCompatActivity {
 
                 recyclerView.setAdapter(new RoomAdapter(allRooms));
             }
-
             @Override
             public void onFailure(@NonNull Call<Root> call, @NonNull Throwable t) {
             }
