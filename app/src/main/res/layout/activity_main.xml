@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#000000">
+    android:background="@color/MainColor">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@drawable/gradient_background"
-        android:elevation="10dp">
+        android:background="@color/MainColor">
 
         <ImageView
             android:id="@+id/logo"
@@ -34,11 +33,6 @@
             android:textStyle="bold"
             android:textColor="@color/textColors" />
     </RelativeLayout>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="#2f303a" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -86,7 +80,6 @@
                 app:cornerRadius="20dp"
                 android:layout_margin="10dp" />
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -129,6 +122,100 @@
         </LinearLayout>
     </LinearLayout>
 
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:paddingTop="5dp"
+            android:gravity="center_vertical"
+            android:background="#1b1b28">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_all"
+                android:layout_height="wrap_content"
+                android:layout_width="70dp"
+                android:text="@string/all"
+                app:cornerRadius="10dp"
+                android:textColor="@color/textColors"
+                app:backgroundTint="@color/floorsButtonColor"
+                app:rippleColor="#6A628F"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"/>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_2"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/_2f"
+                android:textColor="@color/textColors"
+                app:cornerRadius="10dp"
+                app:backgroundTint="@color/floorsButtonColor"
+                app:rippleColor="#6A628F"
+                android:layout_marginRight="10dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_3"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/_3f"
+                android:textColor="@color/textColors"
+                app:cornerRadius="10dp"
+                app:backgroundTint="@color/floorsButtonColor"
+                app:rippleColor="#6A628F"
+                android:layout_marginRight="10dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_4"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/_4f"
+                android:textColor="@color/textColors"
+                app:cornerRadius="10dp"
+                app:backgroundTint="@color/floorsButtonColor"
+                app:rippleColor="#6A628F"
+                android:layout_marginRight="10dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_5"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/_5f"
+                android:textColor="@color/textColors"
+                app:cornerRadius="10dp"
+                app:backgroundTint="@color/floorsButtonColor"
+                app:rippleColor="#6A628F"
+                android:layout_marginRight="10dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_6"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/_6f"
+                android:textColor="@color/textColors"
+                app:cornerRadius="10dp"
+                app:backgroundTint="@color/floorsButtonColor"
+                app:rippleColor="#6A628F"
+                android:layout_marginRight="10dp"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/button_other"
+                android:layout_width="70dp"
+                android:layout_height="wrap_content"
+                android:text="@string/other"
+                android:textColor="@color/textColors"
+                app:cornerRadius="10dp"
+                app:backgroundTint="@color/floorsButtonColor"
+                app:rippleColor="#6A628F"
+                android:layout_marginRight="10dp"/>
+        </LinearLayout>
+    </HorizontalScrollView>
+
     <include layout="@layout/room_header" />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -136,5 +223,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical" />
-
 </LinearLayout>

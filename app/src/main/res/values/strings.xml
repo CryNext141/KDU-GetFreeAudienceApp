@@ -10,4 +10,11 @@
     <string name="audience">Audience</string>
     <string name="type">Type</string>
     <string name="comment">Comment</string>
+    <string name="all">All</string>
+    <string name="_2f">2F</string>
+    <string name="_3f">3F</string>
+    <string name="_4f">4F</string>
+    <string name="_5f">5F</string>
+    <string name="_6f">6F</string>
+    <string name="other">Other</string>
 </resources>

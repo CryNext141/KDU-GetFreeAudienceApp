@@ -30,6 +30,8 @@ import java.util.List;
 import java.time.LocalTime;
 
 public class MainActivity extends AppCompatActivity {
+
+    private List<Room> allRooms;
     public static class Room {
         private String name;
         private String type;
@@ -119,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public interface MyApi {
+    public interface PolitechSoft {
         @GET("/cgi-bin/timetable_export.cgi")
         Call<Root> getRooms(@Query("req_type") String req_type,
                             @Query("lesson") int lesson,
@@ -172,11 +174,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        allRooms = new ArrayList<>();
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         LocalTime currentTime = LocalTime.now();
 
         ColorStateList rippleColor = ColorStateList.valueOf(Color.argb(255, 29,171, 222));
-
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -189,6 +191,16 @@ public class MainActivity extends AppCompatActivity {
         MaterialButton button5 = findViewById(R.id.button5);
         MaterialButton button6 = findViewById(R.id.button6);
 
+
+        MaterialButton buttonAll = findViewById(R.id.button_all);
+        MaterialButton button_2 = findViewById(R.id.button_2);
+        MaterialButton button_3 = findViewById(R.id.button_3);
+        MaterialButton button_4 = findViewById(R.id.button_4);
+        MaterialButton button_5 = findViewById(R.id.button_5);
+        MaterialButton button_6 = findViewById(R.id.button_6);
+        MaterialButton buttonOther = findViewById(R.id.button_other);
+
+
         button1.setOnClickListener(v -> loadRooms(1));
         button2.setOnClickListener(v -> loadRooms(2));
         button3.setOnClickListener(v -> loadRooms(3));
@@ -196,37 +208,60 @@ public class MainActivity extends AppCompatActivity {
         button5.setOnClickListener(v -> loadRooms(5));
         button6.setOnClickListener(v -> loadRooms(6));
 
+
+        buttonAll.setOnClickListener(v -> recyclerView.setAdapter(new RoomAdapter(allRooms)));
+        button_2.setOnClickListener(v -> {
+            List<Room> filteredRooms = filterRoomsByFloor(allRooms, "2");
+            recyclerView.setAdapter(new RoomAdapter(filteredRooms));
+        });
+        button_3.setOnClickListener(v -> {
+            List<Room> filteredRooms = filterRoomsByFloor(allRooms, "3");
+            recyclerView.setAdapter(new RoomAdapter(filteredRooms));
+        });
+        button_4.setOnClickListener(v -> {
+            List<Room> filteredRooms = filterRoomsByFloor(allRooms, "4");
+            recyclerView.setAdapter(new RoomAdapter(filteredRooms));
+        });
+        button_5.setOnClickListener(v -> {
+            List<Room> filteredRooms = filterRoomsByFloor(allRooms, "5");
+            recyclerView.setAdapter(new RoomAdapter(filteredRooms));
+        });
+        button_6.setOnClickListener(v -> {
+            List<Room> filteredRooms = filterRoomsByFloor(allRooms, "6");
+            recyclerView.setAdapter(new RoomAdapter(filteredRooms));
+        });
+        buttonOther.setOnClickListener(v -> {
+            List<Room> filteredRooms = filterRoomsByFloor(allRooms, "other");
+            recyclerView.setAdapter(new RoomAdapter(filteredRooms));
+        });
+
+
         if (isTimeInRange(currentTime, LocalTime.of(8, 30), LocalTime.of(9, 50))) {
             button1.setBackgroundColor(Color.argb(255, 223,224,255));
             button1.setTextColor(Color.argb(255, 94,103,163));
             button1.setRippleColor(rippleColor);
         }
-        else if (isTimeInRange(currentTime, LocalTime.of(10, 0), LocalTime.of(11, 20))) {
+        else if (isTimeInRange(currentTime, LocalTime.of(9, 50), LocalTime.of(11, 20))) {
             button2.setBackgroundColor(Color.argb(255, 223,224,255));
             button2.setTextColor(Color.argb(255, 94,103,163));
             button2.setRippleColor(rippleColor);
         }
-        else if (isTimeInRange(currentTime, LocalTime.of(12, 0), LocalTime.of(13, 20))) {
+        else if (isTimeInRange(currentTime, LocalTime.of(11, 20), LocalTime.of(13, 20))) {
             button3.setBackgroundColor(Color.argb(255, 223,224,255));
             button3.setTextColor(Color.argb(255, 94,103,163));
             button3.setRippleColor(rippleColor);
         }
-        else if (isTimeInRange(currentTime, LocalTime.of(13, 30), LocalTime.of(14, 50))) {
+        else if (isTimeInRange(currentTime, LocalTime.of(13, 20), LocalTime.of(14, 50))) {
             button4.setBackgroundColor(Color.argb(255, 223,224,255));
             button4.setTextColor(Color.argb(255, 94,103,163));
             button4.setRippleColor(rippleColor);
         }
-        else if (isTimeInRange(currentTime, LocalTime.of(15, 10), LocalTime.of(16, 30))) {
+        else if (isTimeInRange(currentTime, LocalTime.of(14, 50), LocalTime.of(16, 30))) {
             button5.setBackgroundColor(Color.argb(255, 223, 224, 255));
             button5.setTextColor(Color.argb(255, 94, 103, 163));
             button5.setRippleColor(rippleColor);
         }
-        else if (isTimeInRange(currentTime, LocalTime.of(16, 40), LocalTime.of(18, 0))) {
-            button6.setBackgroundColor(Color.argb(255, 223,224,255));
-            button6.setTextColor(Color.argb(255, 94,103,163));
-            button6.setRippleColor(rippleColor);
-        }
-        else if (isTimeInRange(currentTime, LocalTime.of(18, 35), LocalTime.of(18, 40))) {
+        else if (isTimeInRange(currentTime, LocalTime.of(16, 30), LocalTime.of(18, 0))) {
             button6.setBackgroundColor(Color.argb(255, 223,224,255));
             button6.setTextColor(Color.argb(255, 94,103,163));
             button6.setRippleColor(rippleColor);
@@ -242,7 +277,7 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        MyApi api = retrofit.create(MyApi.class);
+        PolitechSoft api = retrofit.create(PolitechSoft.class);
 
         Call<Root> call = api.getRooms("free_rooms_list", lesson, "json", "UTF8", "ok");
         call.enqueue(new Callback<Root>() {
@@ -255,10 +290,10 @@ public class MainActivity extends AppCompatActivity {
                 assert root != null;
                 List<FreeRooms> freeRoomsList = root.getPsrozklad_export().getFree_rooms();
 
+                allRooms.clear();
+
                 RecyclerView recyclerView = findViewById(R.id.recyclerView);
                 recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-
-                List<Room> allRooms = new ArrayList<>();
 
                 for (FreeRooms freeRooms : freeRoomsList) {
                     List<Room> rooms = freeRooms.getRooms();
@@ -270,6 +305,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<Root> call, @NonNull Throwable t) {
             }
+
+
         });
     }
+
+    private List<Room> filterRoomsByFloor(List<Room> rooms, String floor) {
+        List<Room> filteredRooms = new ArrayList<>();
+        for (Room room : rooms) {
+            String roomNumber = room.getName().replace("ауд.", "").trim();
+            if (floor.equals("other")) {
+                if (!Character.isDigit(roomNumber.charAt(0))) {
+                    filteredRooms.add(room);
+                }
+            } else if (roomNumber.startsWith(floor)) {
+                filteredRooms.add(room);
+            }
+        }
+        return filteredRooms;
+    }
+
 }
