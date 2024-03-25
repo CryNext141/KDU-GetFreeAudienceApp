@@ -236,7 +236,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        if (isTimeInRange(currentTime, LocalTime.of(8, 30), LocalTime.of(9, 50))) {
+        if (isTimeInRange(currentTime, LocalTime.of(8, 0), LocalTime.of(9, 50))) {
             button1.setBackgroundColor(Color.argb(255, 223,224,255));
             button1.setTextColor(Color.argb(255, 94,103,163));
             button1.setRippleColor(rippleColor);
