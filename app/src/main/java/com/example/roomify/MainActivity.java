@@ -6,8 +6,14 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +21,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
-
 import com.google.android.material.button.MaterialButton;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -32,8 +37,13 @@ import java.time.LocalTime;
 public class MainActivity extends AppCompatActivity {
 
     private List<Room> allRooms;
+
+    private TextView noInternetTextView;
+
     public static class Room {
         private String name;
+
+
         private String type;
         private String comment;
 
@@ -170,11 +180,35 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private final BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            updateConnectivityStatus();
+        }
+    };
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        IntentFilter filter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
+        registerReceiver(networkChangeReceiver, filter);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(networkChangeReceiver);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         allRooms = new ArrayList<>();
+
+        noInternetTextView = findViewById(R.id.noInternetTextView);
+
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         LocalTime currentTime = LocalTime.now();
 
@@ -234,6 +268,14 @@ public class MainActivity extends AppCompatActivity {
             List<Room> filteredRooms = filterRoomsByFloor(allRooms, "other");
             recyclerView.setAdapter(new RoomAdapter(filteredRooms));
         });
+
+
+
+
+
+
+
+
 
 
         if (isTimeInRange(currentTime, LocalTime.of(8, 0), LocalTime.of(9, 50))) {
@@ -323,6 +365,29 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         return filteredRooms;
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    private void updateConnectivityStatus() {
+        if (!isNetworkAvailable()) {
+            // Change the color of the status bar to green
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.noInternet));
+
+            // Show the "No internet" text view
+            noInternetTextView.setVisibility(View.VISIBLE);
+        } else {
+            // Change the color of the status bar back to its original color
+            getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.MainColor));
+
+            // Hide the "No internet" text view
+            noInternetTextView.setVisibility(View.GONE);
+        }
     }
 
 }

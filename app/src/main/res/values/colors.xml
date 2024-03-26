@@ -6,4 +6,5 @@
     <color name="textColors">#e2e1ef</color>
     <color name="white">#FFFFFFFF</color>
     <color name="floorsButtonColor">#484264</color>
+    <color name="noInternet">#f8c337</color>
 </resources>
