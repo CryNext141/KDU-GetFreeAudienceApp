@@ -270,14 +270,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-
-
-
-
-
-
-
-
         if (isTimeInRange(currentTime, LocalTime.of(8, 0), LocalTime.of(9, 50))) {
             button1.setBackgroundColor(Color.argb(255, 223,224,255));
             button1.setTextColor(Color.argb(255, 94,103,163));
@@ -376,16 +368,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateConnectivityStatus() {
         if (!isNetworkAvailable()) {
-            // Change the color of the status bar to green
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.noInternet));
-
-            // Show the "No internet" text view
             noInternetTextView.setVisibility(View.VISIBLE);
         } else {
-            // Change the color of the status bar back to its original color
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.MainColor));
-
-            // Hide the "No internet" text view
             noInternetTextView.setVisibility(View.GONE);
         }
     }
