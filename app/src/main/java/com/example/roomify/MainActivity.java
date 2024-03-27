@@ -35,12 +35,16 @@ import java.util.List;
 import java.time.LocalTime;
 
 public class MainActivity extends AppCompatActivity {
-
     private List<Room> allRooms;
-
     MaterialButton currentButton = null;
-    int defaultColor;
-    int selectedColor;
+    int defaultClassButtonColor;
+    int selectedClassButtonColor;
+
+    int defaultFilterButtonColor;
+    int selectedFilterButtonColor;
+
+    MaterialButton currentClassButton = null;
+    MaterialButton currentFilterButton = null;
 
     private TextView noInternetTextView;
 
@@ -222,6 +226,12 @@ public class MainActivity extends AppCompatActivity {
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         window.setStatusBarColor(ContextCompat.getColor(this, R.color.HeaderColor));
 
+        defaultClassButtonColor = ContextCompat.getColor(this, R.color.defaultButtonColor);
+        selectedClassButtonColor = ContextCompat.getColor(this, R.color.pressedButtonColor);
+
+        defaultFilterButtonColor = ContextCompat.getColor(this, R.color.floorsButtonColor);
+        selectedFilterButtonColor = ContextCompat.getColor(this, R.color.floorsPressedButtonColor);
+
         MaterialButton button1 = findViewById(R.id.button1);
         MaterialButton button2 = findViewById(R.id.button2);
         MaterialButton button3 = findViewById(R.id.button3);
@@ -230,52 +240,40 @@ public class MainActivity extends AppCompatActivity {
         MaterialButton button6 = findViewById(R.id.button6);
 
 
-        MaterialButton buttonAll = findViewById(R.id.button_all);
-        MaterialButton button_2 = findViewById(R.id.button_2);
-        MaterialButton button_3 = findViewById(R.id.button_3);
-        MaterialButton button_4 = findViewById(R.id.button_4);
-        MaterialButton button_5 = findViewById(R.id.button_5);
-        MaterialButton button_6 = findViewById(R.id.button_6);
-        MaterialButton buttonOther = findViewById(R.id.button_other);
+        setupButton(R.id.button1, () -> loadRooms(1), true);
+        setupButton(R.id.button2, () -> loadRooms(2), true);
+        setupButton(R.id.button3, () -> loadRooms(3), true);
+        setupButton(R.id.button4, () -> loadRooms(4), true);
+        setupButton(R.id.button5, () -> loadRooms(5), true);
+        setupButton(R.id.button6, () -> loadRooms(6), true);
 
 
-        buttonAll.setOnClickListener(v -> recyclerView.setAdapter(new RoomAdapter(allRooms)));
-
-        button_2.setOnClickListener(v -> {
+        setupButton(R.id.button_all, () -> recyclerView.setAdapter(new RoomAdapter(allRooms)), false);
+        setupButton(R.id.button_2, () -> {
             List<Room> filteredRooms = filterRoomsByFloor(allRooms, "2");
             recyclerView.setAdapter(new RoomAdapter(filteredRooms));
-        });
-        button_3.setOnClickListener(v -> {
+        }, false);
+
+        setupButton(R.id.button_3, () -> {
             List<Room> filteredRooms = filterRoomsByFloor(allRooms, "3");
             recyclerView.setAdapter(new RoomAdapter(filteredRooms));
-        });
-        button_4.setOnClickListener(v -> {
+        }, false);
+        setupButton(R.id.button_4, () -> {
             List<Room> filteredRooms = filterRoomsByFloor(allRooms, "4");
             recyclerView.setAdapter(new RoomAdapter(filteredRooms));
-        });
-        button_5.setOnClickListener(v -> {
+        }, false);
+        setupButton(R.id.button_5, () -> {
             List<Room> filteredRooms = filterRoomsByFloor(allRooms, "5");
             recyclerView.setAdapter(new RoomAdapter(filteredRooms));
-        });
-        button_6.setOnClickListener(v -> {
+        }, false);
+        setupButton(R.id.button_6, () -> {
             List<Room> filteredRooms = filterRoomsByFloor(allRooms, "6");
             recyclerView.setAdapter(new RoomAdapter(filteredRooms));
-        });
-        buttonOther.setOnClickListener(v -> {
+        }, false);
+        setupButton(R.id.button_other, () -> {
             List<Room> filteredRooms = filterRoomsByFloor(allRooms, "other");
             recyclerView.setAdapter(new RoomAdapter(filteredRooms));
-        });
-
-        defaultColor = ContextCompat.getColor(this, R.color.defaultButtonColor);
-        selectedColor = ContextCompat.getColor(this, R.color.pressedButtonColor);
-
-        setupButton(R.id.button1, 1);
-        setupButton(R.id.button2, 2);
-        setupButton(R.id.button3, 3);
-        setupButton(R.id.button4, 4);
-        setupButton(R.id.button5, 5);
-        setupButton(R.id.button6, 6);
-
+        }, false);
 
 
         if (isTimeInRange(currentTime, LocalTime.of(8, 0), LocalTime.of(9, 50))) {
@@ -283,6 +281,12 @@ public class MainActivity extends AppCompatActivity {
             button1.setTextColor(Color.argb(255, 94,103,163));
             button1.setRippleColor(rippleColor);
         }
+
+        /*else if (isTimeInRange(currentTime, LocalTime.of(23, 0), LocalTime.of(23, 59))) {
+            button1.setBackgroundResource(R.drawable.button_stroke);
+            button1.setTextColor(Color.argb(255, 94,103,163));
+            button1.setRippleColor(rippleColor);
+        }*/
         else if (isTimeInRange(currentTime, LocalTime.of(9, 50), LocalTime.of(11, 20))) {
             button2.setBackgroundColor(Color.argb(255, 223,224,255));
             button2.setTextColor(Color.argb(255, 94,103,163));
@@ -383,25 +387,31 @@ public class MainActivity extends AppCompatActivity {
             noInternetTextView.setVisibility(View.GONE);
         }
     }
-
-
-    private void setupButton(int buttonId, int lesson) {
+    private void setupButton(int buttonId, Runnable action, boolean isClassButton) {
         MaterialButton button = findViewById(buttonId);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentButton != null) {
-                    currentButton.setBackgroundColor(defaultColor);
+        button.setOnClickListener(v -> {
+            if (isClassButton) {
+                if (currentClassButton != null) {
+                    currentClassButton.setBackgroundColor(defaultClassButtonColor);
                 }
-                currentButton = button;
-                currentButton.setBackgroundColor(selectedColor);
+                currentClassButton = button;
+                currentClassButton.setBackgroundColor(selectedClassButtonColor);
 
-                // Call loadRooms directly
-                loadRooms(lesson);
+                if (currentFilterButton != null) {
+                    currentFilterButton.setBackgroundColor(defaultFilterButtonColor);
+                    currentFilterButton = null;
+                }
+            } else {
+                if (currentFilterButton != null) {
+                    currentFilterButton.setBackgroundColor(defaultFilterButtonColor);
+                }
+                currentFilterButton = button;
+                currentFilterButton.setBackgroundColor(selectedFilterButtonColor);
+            }
+            if (action != null) {
+                action.run();
             }
         });
     }
-
-
 }
 

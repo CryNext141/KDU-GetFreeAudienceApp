@@ -6,8 +6,10 @@
     <color name="textColors">#e2e1ef</color>
     <color name="white">#FFFFFFFF</color>
     <color name="floorsButtonColor">#484264</color>
+    <color name="floorsPressedButtonColor">#6582FF</color>
     <color name="noInternet">#f8c337</color>
     <color name="defaultButtonColor">#2f303a</color>
     <color name="pressedButtonColor">#0028d4</color>
-
+    <color name="classButtonRippleColor">#6582FF</color>
+    <color name="floorButtonRippleColor">#7B93FA</color>
 </resources>
