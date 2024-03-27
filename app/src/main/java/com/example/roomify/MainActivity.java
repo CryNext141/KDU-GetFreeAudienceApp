@@ -38,6 +38,10 @@ public class MainActivity extends AppCompatActivity {
 
     private List<Room> allRooms;
 
+    MaterialButton currentButton = null;
+    int defaultColor;
+    int selectedColor;
+
     private TextView noInternetTextView;
 
     public static class Room {
@@ -235,15 +239,8 @@ public class MainActivity extends AppCompatActivity {
         MaterialButton buttonOther = findViewById(R.id.button_other);
 
 
-        button1.setOnClickListener(v -> loadRooms(1));
-        button2.setOnClickListener(v -> loadRooms(2));
-        button3.setOnClickListener(v -> loadRooms(3));
-        button4.setOnClickListener(v -> loadRooms(4));
-        button5.setOnClickListener(v -> loadRooms(5));
-        button6.setOnClickListener(v -> loadRooms(6));
-
-
         buttonAll.setOnClickListener(v -> recyclerView.setAdapter(new RoomAdapter(allRooms)));
+
         button_2.setOnClickListener(v -> {
             List<Room> filteredRooms = filterRoomsByFloor(allRooms, "2");
             recyclerView.setAdapter(new RoomAdapter(filteredRooms));
@@ -268,6 +265,17 @@ public class MainActivity extends AppCompatActivity {
             List<Room> filteredRooms = filterRoomsByFloor(allRooms, "other");
             recyclerView.setAdapter(new RoomAdapter(filteredRooms));
         });
+
+        defaultColor = ContextCompat.getColor(this, R.color.defaultButtonColor);
+        selectedColor = ContextCompat.getColor(this, R.color.pressedButtonColor);
+
+        setupButton(R.id.button1, 1);
+        setupButton(R.id.button2, 2);
+        setupButton(R.id.button3, 3);
+        setupButton(R.id.button4, 4);
+        setupButton(R.id.button5, 5);
+        setupButton(R.id.button6, 6);
+
 
 
         if (isTimeInRange(currentTime, LocalTime.of(8, 0), LocalTime.of(9, 50))) {
@@ -376,4 +384,24 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+
+    private void setupButton(int buttonId, int lesson) {
+        MaterialButton button = findViewById(buttonId);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentButton != null) {
+                    currentButton.setBackgroundColor(defaultColor);
+                }
+                currentButton = button;
+                currentButton.setBackgroundColor(selectedColor);
+
+                // Call loadRooms directly
+                loadRooms(lesson);
+            }
+        });
+    }
+
+
 }
+
