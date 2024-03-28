@@ -6,6 +6,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -209,6 +210,7 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(networkChangeReceiver);
     }
 
+    @SuppressLint("InflateParams")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -275,18 +277,12 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setAdapter(new RoomAdapter(filteredRooms));
         }, false);
 
-
         if (isTimeInRange(currentTime, LocalTime.of(8, 0), LocalTime.of(9, 50))) {
             button1.setBackgroundColor(Color.argb(255, 223,224,255));
             button1.setTextColor(Color.argb(255, 94,103,163));
             button1.setRippleColor(rippleColor);
         }
 
-        /*else if (isTimeInRange(currentTime, LocalTime.of(23, 0), LocalTime.of(23, 59))) {
-            button1.setBackgroundResource(R.drawable.button_stroke);
-            button1.setTextColor(Color.argb(255, 94,103,163));
-            button1.setRippleColor(rippleColor);
-        }*/
         else if (isTimeInRange(currentTime, LocalTime.of(9, 50), LocalTime.of(11, 20))) {
             button2.setBackgroundColor(Color.argb(255, 223,224,255));
             button2.setTextColor(Color.argb(255, 94,103,163));

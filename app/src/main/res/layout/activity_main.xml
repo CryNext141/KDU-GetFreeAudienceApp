@@ -34,7 +34,7 @@
             android:layout_centerVertical="true"
             android:padding="5dp"
             android:paddingStart="20dp"
-            android:src="@drawable/ic_action_ukdlogo"/>
+            android:src="@drawable/ic_action_ukdlogo" />
 
         <TextView
             android:id="@+id/header"
@@ -65,12 +65,13 @@
                 android:id="@+id/button1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="6dp"
+                android:layout_margin="5dp"
                 app:backgroundTint="#2f303a"
                 android:text="@string/clasess_1_n8_30_9_50"
                 android:textColor="@color/textColors"
                 app:rippleColor="@color/classButtonRippleColor"
-                app:cornerRadius="20dp"/>
+                app:cornerRadius="20dp"
+                />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button3"
@@ -81,7 +82,7 @@
                 app:backgroundTint="#2f303a"
                 app:rippleColor="@color/classButtonRippleColor"
                 app:cornerRadius="20dp"
-                android:layout_margin="6dp" />
+                android:layout_margin="5dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button5"
@@ -92,7 +93,7 @@
                 app:backgroundTint="#2f303a"
                 app:rippleColor="@color/classButtonRippleColor"
                 app:cornerRadius="20dp"
-                android:layout_margin="6dp" />
+                android:layout_margin="5dp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -109,7 +110,7 @@
                 app:backgroundTint="#2f303a"
                 app:rippleColor="@color/classButtonRippleColor"
                 app:cornerRadius="20dp"
-                android:layout_margin="6dp"/>
+                android:layout_margin="5dp"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button4"
@@ -120,7 +121,7 @@
                 app:backgroundTint="#2f303a"
                 app:rippleColor="@color/classButtonRippleColor"
                 app:cornerRadius="20dp"
-                android:layout_margin="6dp" />
+                android:layout_margin="5dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button6"
@@ -131,7 +132,7 @@
                 app:backgroundTint="#2f303a"
                 app:rippleColor="@color/classButtonRippleColor"
                 app:cornerRadius="20dp"
-                android:layout_margin="6dp" />
+                android:layout_margin="5dp" />
         </LinearLayout>
     </LinearLayout>
 
