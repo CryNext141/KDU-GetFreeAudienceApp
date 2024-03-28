@@ -37,44 +37,30 @@ import java.time.LocalTime;
 
 public class MainActivity extends AppCompatActivity {
     private List<Room> allRooms;
-    //MaterialButton currentButton = null;
-
     int defaultClassButtonColor;
     int selectedClassButtonColor;
-
     int defaultFilterButtonColor;
     int selectedFilterButtonColor;
-
     MaterialButton currentClassButton = null;
     MaterialButton currentFilterButton = null;
     MaterialButton currentTimeButton = null;
-
-
     private TextView noInternetTextView;
-
     public static class Room {
         private String name;
-
-
         private String type;
         private String comment;
-
         public String getName() {
             return name;
         }
-
         public String getType() {
             return type;
         }
-
         public void setType(String type) {
             this.type = type;
         }
-
         public String getComment() {
             return comment;
         }
-
         public void setComment(String comment) {
             this.comment = comment;
         }
@@ -84,48 +70,37 @@ public class MainActivity extends AppCompatActivity {
         private String date;
         private String lesson;
         private List<Room> rooms;
-
         public String getDate() {
             return date;
         }
-
         public void setDate(String date) {
             this.date = date;
         }
-
         public String getLesson() {
             return lesson;
         }
-
         public void setLesson(String lesson) {
             this.lesson = lesson;
         }
-
         public List<Room> getRooms() {
             return rooms;
         }
-
         public void setRooms(List<Room> rooms) {
             this.rooms = rooms;
         }
     }
-
     public static class PsrozkladExport {
         private List<FreeRooms> free_rooms;
         private String code;
-
         public List<FreeRooms> getFree_rooms() {
             return free_rooms;
         }
-
         public void setFree_rooms(List<FreeRooms> free_rooms) {
             this.free_rooms = free_rooms;
         }
-
         public String getCode() {
             return code;
         }
-
         public void setCode(String code) {
             this.code = code;
         }
@@ -165,18 +140,15 @@ public class MainActivity extends AppCompatActivity {
 
     public static class RoomAdapter extends RecyclerView.Adapter<RoomViewHolder> {
         private final List<Room> rooms;
-
         public RoomAdapter(List<Room> rooms) {
             this.rooms = rooms;
         }
-
         @NonNull
         @Override
         public RoomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.room_item, parent, false);
             return new RoomViewHolder(view);
         }
-
         @Override
         public void onBindViewHolder(RoomViewHolder holder, int position) {
             Room room = rooms.get(position);
@@ -282,7 +254,6 @@ public class MainActivity extends AppCompatActivity {
             List<Room> filteredRooms = filterRoomsByFloor(allRooms, "2");
             recyclerView.setAdapter(new RoomAdapter(filteredRooms));
         }, false);
-
         setupButton(R.id.button_3, () -> {
             List<Room> filteredRooms = filterRoomsByFloor(allRooms, "3");
             recyclerView.setAdapter(new RoomAdapter(filteredRooms));
@@ -303,7 +274,6 @@ public class MainActivity extends AppCompatActivity {
             List<Room> filteredRooms = filterRoomsByFloor(allRooms, "other");
             recyclerView.setAdapter(new RoomAdapter(filteredRooms));
         }, false);
-
     }
     private boolean isTimeInRange(LocalTime currentTime, LocalTime startTime, LocalTime endTime) {
         return !currentTime.isBefore(startTime) && !currentTime.isAfter(endTime);
