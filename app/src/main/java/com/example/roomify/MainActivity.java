@@ -37,7 +37,8 @@ import java.time.LocalTime;
 
 public class MainActivity extends AppCompatActivity {
     private List<Room> allRooms;
-    MaterialButton currentButton = null;
+    //MaterialButton currentButton = null;
+
     int defaultClassButtonColor;
     int selectedClassButtonColor;
 
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
     MaterialButton currentClassButton = null;
     MaterialButton currentFilterButton = null;
+    MaterialButton currentTimeButton = null;
+
 
     private TextView noInternetTextView;
 
@@ -222,7 +225,6 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         LocalTime currentTime = LocalTime.now();
 
-        ColorStateList rippleColor = ColorStateList.valueOf(Color.argb(255, 29,171, 222));
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -234,12 +236,37 @@ public class MainActivity extends AppCompatActivity {
         defaultFilterButtonColor = ContextCompat.getColor(this, R.color.floorsButtonColor);
         selectedFilterButtonColor = ContextCompat.getColor(this, R.color.floorsPressedButtonColor);
 
+
         MaterialButton button1 = findViewById(R.id.button1);
         MaterialButton button2 = findViewById(R.id.button2);
         MaterialButton button3 = findViewById(R.id.button3);
         MaterialButton button4 = findViewById(R.id.button4);
         MaterialButton button5 = findViewById(R.id.button5);
         MaterialButton button6 = findViewById(R.id.button6);
+
+        if (isTimeInRange(currentTime, LocalTime.of(8, 0), LocalTime.of(9, 50))) {
+            currentTimeButton = button1;
+
+        } else if (isTimeInRange(currentTime, LocalTime.of(9, 50), LocalTime.of(11, 20))) {
+            currentTimeButton = button2;
+        }
+        else if (isTimeInRange(currentTime, LocalTime.of(11, 20), LocalTime.of(13, 20))) {
+            currentTimeButton = button3;
+        }
+        else if (isTimeInRange(currentTime, LocalTime.of(13, 20), LocalTime.of(14, 50))) {
+            currentTimeButton = button4;
+        }
+        else if (isTimeInRange(currentTime, LocalTime.of(14, 50), LocalTime.of(16, 30))) {
+            currentTimeButton = button5;
+        }
+        else if (isTimeInRange(currentTime, LocalTime.of(16, 30), LocalTime.of(18, 0))) {
+            currentTimeButton = button6;
+        }
+
+        if (currentTimeButton != null) {
+            currentTimeButton.setBackgroundColor(Color.argb(255, 223,224,255));
+            currentTimeButton.setTextColor(Color.argb(255, 94,103,163));
+        }
 
 
         setupButton(R.id.button1, () -> loadRooms(1), true);
@@ -277,37 +304,6 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setAdapter(new RoomAdapter(filteredRooms));
         }, false);
 
-        if (isTimeInRange(currentTime, LocalTime.of(8, 0), LocalTime.of(9, 50))) {
-            button1.setBackgroundColor(Color.argb(255, 223,224,255));
-            button1.setTextColor(Color.argb(255, 94,103,163));
-            button1.setRippleColor(rippleColor);
-        }
-
-        else if (isTimeInRange(currentTime, LocalTime.of(9, 50), LocalTime.of(11, 20))) {
-            button2.setBackgroundColor(Color.argb(255, 223,224,255));
-            button2.setTextColor(Color.argb(255, 94,103,163));
-            button2.setRippleColor(rippleColor);
-        }
-        else if (isTimeInRange(currentTime, LocalTime.of(11, 20), LocalTime.of(13, 20))) {
-            button3.setBackgroundColor(Color.argb(255, 223,224,255));
-            button3.setTextColor(Color.argb(255, 94,103,163));
-            button3.setRippleColor(rippleColor);
-        }
-        else if (isTimeInRange(currentTime, LocalTime.of(13, 20), LocalTime.of(14, 50))) {
-            button4.setBackgroundColor(Color.argb(255, 223,224,255));
-            button4.setTextColor(Color.argb(255, 94,103,163));
-            button4.setRippleColor(rippleColor);
-        }
-        else if (isTimeInRange(currentTime, LocalTime.of(14, 50), LocalTime.of(16, 30))) {
-            button5.setBackgroundColor(Color.argb(255, 223, 224, 255));
-            button5.setTextColor(Color.argb(255, 94, 103, 163));
-            button5.setRippleColor(rippleColor);
-        }
-        else if (isTimeInRange(currentTime, LocalTime.of(16, 30), LocalTime.of(18, 0))) {
-            button6.setBackgroundColor(Color.argb(255, 223,224,255));
-            button6.setTextColor(Color.argb(255, 94,103,163));
-            button6.setRippleColor(rippleColor);
-        }
     }
     private boolean isTimeInRange(LocalTime currentTime, LocalTime startTime, LocalTime endTime) {
         return !currentTime.isBefore(startTime) && !currentTime.isAfter(endTime);
@@ -347,11 +343,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(@NonNull Call<Root> call, @NonNull Throwable t) {
             }
-
-
         });
     }
-
     private List<Room> filterRoomsByFloor(List<Room> rooms, String floor) {
         List<Room> filteredRooms = new ArrayList<>();
         for (Room room : rooms) {
@@ -383,19 +376,27 @@ public class MainActivity extends AppCompatActivity {
             noInternetTextView.setVisibility(View.GONE);
         }
     }
+    @SuppressLint("ResourceAsColor")
     private void setupButton(int buttonId, Runnable action, boolean isClassButton) {
         MaterialButton button = findViewById(buttonId);
         button.setOnClickListener(v -> {
             if (isClassButton) {
                 if (currentClassButton != null) {
                     currentClassButton.setBackgroundColor(defaultClassButtonColor);
+                    currentClassButton.setTextColor(Color.argb(255,226,225,239));
                 }
                 currentClassButton = button;
                 currentClassButton.setBackgroundColor(selectedClassButtonColor);
+                currentClassButton.setTextColor(Color.argb(255,226,225,239));
 
                 if (currentFilterButton != null) {
                     currentFilterButton.setBackgroundColor(defaultFilterButtonColor);
                     currentFilterButton = null;
+                }
+
+                if (currentTimeButton != null && currentTimeButton != currentClassButton) {
+                    currentTimeButton.setBackgroundColor(Color.argb(255, 223,224,255));
+                    currentTimeButton.setTextColor(Color.argb(255, 94,103,163));
                 }
             } else {
                 if (currentFilterButton != null) {
