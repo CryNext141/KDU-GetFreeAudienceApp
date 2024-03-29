@@ -11,7 +11,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -197,6 +196,7 @@ public class MainActivity extends AppCompatActivity {
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         LocalTime currentTime = LocalTime.now();
 
+
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
         window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -207,7 +207,6 @@ public class MainActivity extends AppCompatActivity {
 
         defaultFilterButtonColor = ContextCompat.getColor(this, R.color.floorsButtonColor);
         selectedFilterButtonColor = ContextCompat.getColor(this, R.color.floorsPressedButtonColor);
-
 
         MaterialButton button1 = findViewById(R.id.button1);
         MaterialButton button2 = findViewById(R.id.button2);

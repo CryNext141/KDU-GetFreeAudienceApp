@@ -23,6 +23,7 @@
     </FrameLayout>
 
     <RelativeLayout
+        android:id="@+id/header_back"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:background="@color/MainColor">
