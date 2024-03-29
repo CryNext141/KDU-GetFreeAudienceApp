@@ -248,5 +248,10 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+        android:scrollbars="none"
+        android:background="@drawable/rounded_corners"
+        android:layout_margin="20dp"
+        />
+
+
 </LinearLayout>
