@@ -7,6 +7,21 @@
     android:orientation="vertical"
     android:background="@color/MainColor">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/noInternetTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/noInternet"
+            android:text="No internet"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textSize="14sp" />
+    </FrameLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="60dp"
@@ -50,13 +65,13 @@
                 android:id="@+id/button1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="5dp"
                 app:backgroundTint="#2f303a"
                 android:text="@string/clasess_1_n8_30_9_50"
                 android:textColor="@color/textColors"
-                app:rippleColor="#4F5163"
+                app:rippleColor="@color/classButtonRippleColor"
                 app:cornerRadius="20dp"
-                tools:ignore="VisualLintButtonSize" />
+                />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button3"
@@ -65,9 +80,9 @@
                 android:text="@string/clasess_3_n12_00_13_20"
                 android:textColor="@color/textColors"
                 app:backgroundTint="#2f303a"
-                app:rippleColor="#4F5163"
+                app:rippleColor="@color/classButtonRippleColor"
                 app:cornerRadius="20dp"
-                android:layout_margin="10dp" />
+                android:layout_margin="5dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button5"
@@ -76,9 +91,9 @@
                 android:text="@string/clasess_5_n15_10_16_30"
                 android:textColor="@color/textColors"
                 app:backgroundTint="#2f303a"
-                app:rippleColor="#4F5163"
+                app:rippleColor="@color/classButtonRippleColor"
                 app:cornerRadius="20dp"
-                android:layout_margin="10dp" />
+                android:layout_margin="5dp" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="0dp"
@@ -93,10 +108,9 @@
                 android:text="@string/clasess_2_n10_00_11_20"
                 android:textColor="@color/textColors"
                 app:backgroundTint="#2f303a"
-                app:rippleColor="#4F5163"
+                app:rippleColor="@color/classButtonRippleColor"
                 app:cornerRadius="20dp"
-                android:layout_margin="10dp"
-                android:layout_marginTop="10dp" />
+                android:layout_margin="5dp"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button4"
@@ -105,9 +119,9 @@
                 android:text="@string/clasess_4_n13_30_14_50"
                 android:textColor="@color/textColors"
                 app:backgroundTint="#2f303a"
-                app:rippleColor="#4F5163"
+                app:rippleColor="@color/classButtonRippleColor"
                 app:cornerRadius="20dp"
-                android:layout_margin="10dp" />
+                android:layout_margin="5dp" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button6"
@@ -116,9 +130,9 @@
                 android:text="@string/clasess_6_n16_40_18_00"
                 android:textColor="@color/textColors"
                 app:backgroundTint="#2f303a"
-                app:rippleColor="#4F5163"
+                app:rippleColor="@color/classButtonRippleColor"
                 app:cornerRadius="20dp"
-                android:layout_margin="10dp" />
+                android:layout_margin="5dp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -139,7 +153,7 @@
             app:cornerRadius="10dp"
             android:textColor="@color/textColors"
             app:backgroundTint="@color/floorsButtonColor"
-            app:rippleColor="#6A628F"
+            app:rippleColor="@color/floorButtonRippleColor"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"/>
 
@@ -152,7 +166,7 @@
             android:textColor="@color/textColors"
             app:cornerRadius="10dp"
             app:backgroundTint="@color/floorsButtonColor"
-            app:rippleColor="#6A628F"
+            app:rippleColor="@color/floorButtonRippleColor"
             android:layout_marginRight="10dp"/>
     </LinearLayout>
 
@@ -180,7 +194,7 @@
                 android:textColor="@color/textColors"
                 app:backgroundTint="@color/floorsButtonColor"
                 app:cornerRadius="10dp"
-                app:rippleColor="#6A628F" />
+                app:rippleColor="@color/floorButtonRippleColor" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_3"
@@ -191,7 +205,7 @@
                 android:textColor="@color/textColors"
                 app:backgroundTint="@color/floorsButtonColor"
                 app:cornerRadius="10dp"
-                app:rippleColor="#6A628F" />
+                app:rippleColor="@color/floorButtonRippleColor" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_4"
@@ -202,7 +216,7 @@
                 android:textColor="@color/textColors"
                 app:backgroundTint="@color/floorsButtonColor"
                 app:cornerRadius="10dp"
-                app:rippleColor="#6A628F" />
+                app:rippleColor="@color/floorButtonRippleColor" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_5"
@@ -213,7 +227,7 @@
                 android:textColor="@color/textColors"
                 app:backgroundTint="@color/floorsButtonColor"
                 app:cornerRadius="10dp"
-                app:rippleColor="#6A628F" />
+                app:rippleColor="@color/floorButtonRippleColor" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/button_6"
@@ -224,7 +238,7 @@
                 android:textColor="@color/textColors"
                 app:backgroundTint="@color/floorsButtonColor"
                 app:cornerRadius="10dp"
-                app:rippleColor="#6A628F" />
+                app:rippleColor="@color/floorButtonRippleColor" />
         </LinearLayout>
     </HorizontalScrollView>
 
@@ -234,5 +248,10 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:scrollbars="vertical" />
+        android:scrollbars="none"
+        android:background="@drawable/rounded_corners"
+        android:layout_margin="20dp"
+        />
+
+
 </LinearLayout>

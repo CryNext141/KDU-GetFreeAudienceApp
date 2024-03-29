@@ -15,6 +15,7 @@
         android:textColor="@color/white"
         android:gravity="center" />
 
+
     <TextView
         android:id="@+id/type"
         android:layout_width="0dp"
@@ -24,6 +25,7 @@
         android:textColor="@color/white"
         android:gravity="center" />
 
+
     <TextView
         android:id="@+id/comment"
         android:layout_width="0dp"
@@ -32,4 +34,7 @@
         android:textSize="18sp"
         android:textColor="@color/white"
         android:gravity="center" />
+
+
 </LinearLayout>
+
