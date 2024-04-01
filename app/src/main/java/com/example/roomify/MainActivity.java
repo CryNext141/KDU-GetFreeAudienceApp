@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Color;
+import android.icu.text.SimpleDateFormat;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -31,8 +32,10 @@ import retrofit2.http.GET;
 import retrofit2.http.Query;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.time.LocalTime;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
     private List<Room> allRooms;
@@ -214,6 +217,12 @@ public class MainActivity extends AppCompatActivity {
         MaterialButton button4 = findViewById(R.id.button4);
         MaterialButton button5 = findViewById(R.id.button5);
         MaterialButton button6 = findViewById(R.id.button6);
+
+
+        final TextView dateTextView = findViewById(R.id.date);
+        final SimpleDateFormat sdf = new SimpleDateFormat("EEEE, d MMMM", new Locale("en","UA"));
+        String currentDate = sdf.format(new Date());
+        dateTextView.setText(" Classes for:\n " + currentDate);
 
         if (isTimeInRange(currentTime, LocalTime.of(8, 0), LocalTime.of(9, 50))) {
             currentTimeButton = button1;
