@@ -17,4 +17,6 @@
     <string name="_5f">5F</string>
     <string name="_6f">6F</string>
     <string name="other">Other</string>
+    <string name="api_failure">API failure</string>
+    <string name="no_internet">No internet</string>
 </resources>

@@ -15,7 +15,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/noInternet"
-            android:text="No internet"
+            android:text="@string/no_internet"
+            android:textColor="@android:color/white"
+            android:gravity="center"
+            android:visibility="gone"
+            android:textSize="14sp" />
+    </FrameLayout>
+
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/apiErrorTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/apiError"
+            android:text="@string/api_failure"
             android:textColor="@android:color/white"
             android:gravity="center"
             android:visibility="gone"
@@ -185,7 +201,6 @@
             android:layout_marginRight="10dp"/>
     </LinearLayout>
 
-
     <HorizontalScrollView
         android:layout_width="443dp"
         android:layout_height="wrap_content"
@@ -267,6 +282,4 @@
         android:background="@drawable/rounded_corners"
         android:layout_margin="20dp"
         />
-
-
 </LinearLayout>

@@ -23,6 +23,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
+
+import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,11 +33,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.time.LocalTime;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
     private List<Room> allRooms;
@@ -47,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     MaterialButton currentFilterButton = null;
     MaterialButton currentTimeButton = null;
     private TextView noInternetTextView;
+    private TextView apiErrorTextView;
+
     public static class Room {
         private String name;
         private String type;
@@ -195,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
         allRooms = new ArrayList<>();
 
         noInternetTextView = findViewById(R.id.noInternetTextView);
+        apiErrorTextView = findViewById(R.id.apiErrorTextView);
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         LocalTime currentTime = LocalTime.now();
@@ -288,8 +295,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loadRooms(int lesson) {
+
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .readTimeout(2, TimeUnit.SECONDS)
+                .connectTimeout(2, TimeUnit.SECONDS)
+                .build();
+
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("http://195.162.83.28")
+                .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
@@ -299,9 +313,10 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<Root>() {
             @Override
             public void onResponse(@NonNull Call<Root> call, @NonNull Response<Root> response) {
-                if (!response.isSuccessful()) {
-                    return;
-                }
+
+                apiErrorTextView.setVisibility(View.GONE);
+                getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.MainColor));
+
                 Root root = response.body();
                 assert root != null;
                 List<FreeRooms> freeRoomsList = root.getPsrozklad_export().getFree_rooms();
@@ -315,11 +330,14 @@ public class MainActivity extends AppCompatActivity {
                     List<Room> rooms = freeRooms.getRooms();
                     allRooms.addAll(rooms);
                 }
-
                 recyclerView.setAdapter(new RoomAdapter(allRooms));
             }
             @Override
             public void onFailure(@NonNull Call<Root> call, @NonNull Throwable t) {
+                if (t instanceof SocketTimeoutException) {
+                    apiErrorTextView.setVisibility(View.VISIBLE);
+                    getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.apiError));
+                }
             }
         });
     }
@@ -389,4 +407,3 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 }
-
