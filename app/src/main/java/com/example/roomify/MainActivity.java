@@ -22,6 +22,8 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import com.google.android.material.button.MaterialButton;
 
 import okhttp3.OkHttpClient;
@@ -97,9 +99,38 @@ public class MainActivity extends AppCompatActivity {
             this.rooms = rooms;
         }
     }
+
+    public static class Error {
+        private String error_message;
+        private String errorcode;
+
+        public String getError_message() {
+            return error_message;
+        }
+
+        public void setError_message(String error_message) {
+            this.error_message = error_message;
+        }
+
+        public String getErrorcode() {
+            return errorcode;
+        }
+
+        public void setErrorcode(String errorcode) {
+            this.errorcode = errorcode;
+        }
+    }
     public static class PsrozkladExport {
         private List<FreeRooms> free_rooms;
         private String code;
+        private Error error;
+        public Error getError() {
+            return error;
+        }
+
+        public void setError(Error error) {
+            this.error = error;
+        }
         public List<FreeRooms> getFree_rooms() {
             return free_rooms;
         }
@@ -178,7 +209,6 @@ public class MainActivity extends AppCompatActivity {
             updateConnectivityStatus();
         }
     };
-
 
     @Override
     protected void onResume() {
@@ -319,19 +349,33 @@ public class MainActivity extends AppCompatActivity {
 
                 Root root = response.body();
                 assert root != null;
+
+                if (root.getPsrozklad_export().getError() != null) {
+                    String errorMessage = root.getPsrozklad_export().getError().getError_message();
+                    String errorCode = root.getPsrozklad_export().getError().getErrorcode();
+                    Toast.makeText(MainActivity.this, "Error: " + errorMessage + ", code: " + errorCode, Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 List<FreeRooms> freeRoomsList = root.getPsrozklad_export().getFree_rooms();
 
-                allRooms.clear();
+                if (freeRoomsList != null) {
+                    allRooms.clear();
 
-                RecyclerView recyclerView = findViewById(R.id.recyclerView);
-                recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+                    RecyclerView recyclerView = findViewById(R.id.recyclerView);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(MainActivity.this));
 
-                for (FreeRooms freeRooms : freeRoomsList) {
-                    List<Room> rooms = freeRooms.getRooms();
-                    allRooms.addAll(rooms);
+                    for (FreeRooms freeRooms : freeRoomsList) {
+                        List<Room> rooms = freeRooms.getRooms();
+                        allRooms.addAll(rooms);
+                    }
+                    recyclerView.setAdapter(new RoomAdapter(allRooms));
+                } else {
+                    Toast.makeText(MainActivity.this, "No free rooms", Toast.LENGTH_SHORT).show();
                 }
-                recyclerView.setAdapter(new RoomAdapter(allRooms));
             }
+
+
             @Override
             public void onFailure(@NonNull Call<Root> call, @NonNull Throwable t) {
                 if (t instanceof SocketTimeoutException) {
