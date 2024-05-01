@@ -50,7 +50,15 @@ public class MainActivity extends AppCompatActivity {
     MaterialButton currentTimeButton = null;
     private TextView noInternetTextView;
     private TextView apiErrorTextView;
-
+    private final OkHttpClient okHttpClient = new OkHttpClient.Builder()
+            .readTimeout(2, TimeUnit.SECONDS)
+            .connectTimeout(2, TimeUnit.SECONDS)
+            .build();
+    private final Retrofit retrofit = new Retrofit.Builder()
+            .baseUrl("http://195.162.83.28")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build();
     private final BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -141,32 +149,26 @@ public class MainActivity extends AppCompatActivity {
         setupButton(R.id.button5, () -> loadRooms(5), true);
         setupButton(R.id.button6, () -> loadRooms(6), true);
 
+        //array of buttons identifiers
+        int[] buttonId = {R.id.button1, R.id.button2, R.id.button3, R.id.button4, R.id.button5, R.id.button6};
 
-        setupButton(R.id.button_all, () -> recyclerView.setAdapter(new RoomAdapter(allRooms)), false);
-        setupButton(R.id.button_2, () -> {
-            List<Room> filteredRooms = filterRoomsByFloor(allRooms, "2");
-            recyclerView.setAdapter(new RoomAdapter(filteredRooms));
-        }, false);
-        setupButton(R.id.button_3, () -> {
-            List<Room> filteredRooms = filterRoomsByFloor(allRooms, "3");
-            recyclerView.setAdapter(new RoomAdapter(filteredRooms));
-        }, false);
-        setupButton(R.id.button_4, () -> {
-            List<Room> filteredRooms = filterRoomsByFloor(allRooms, "4");
-            recyclerView.setAdapter(new RoomAdapter(filteredRooms));
-        }, false);
-        setupButton(R.id.button_5, () -> {
-            List<Room> filteredRooms = filterRoomsByFloor(allRooms, "5");
-            recyclerView.setAdapter(new RoomAdapter(filteredRooms));
-        }, false);
-        setupButton(R.id.button_6, () -> {
-            List<Room> filteredRooms = filterRoomsByFloor(allRooms, "6");
-            recyclerView.setAdapter(new RoomAdapter(filteredRooms));
-        }, false);
-        setupButton(R.id.button_other, () -> {
-            List<Room> filteredRooms = filterRoomsByFloor(allRooms, "other");
-            recyclerView.setAdapter(new RoomAdapter(filteredRooms));
-        }, false);
+        for (int i = 0; i < buttonId.length; i++) {
+            final int finalI = i;
+            setupButton(buttonId[i], () -> loadRooms(finalI+1), true);
+        }
+
+        //array of filter buttons identifiers
+        int[] filterButtonIds = {R.id.button_all, R.id.button_2, R.id.button_3, R.id.button_4, R.id.button_5, R.id.button_6, R.id.button_other};
+        String[] floors = {"all", "2", "3", "4", "5", "6", "other"};
+
+        for (int i = 0; i < filterButtonIds.length; i++) {
+            String floor = floors[i];
+            final int finalI = i;
+            setupButton(filterButtonIds[i], () -> {
+                List<Room> filteredRooms = filterRoomsByFloor(allRooms, floor);
+                recyclerView.setAdapter(new RoomAdapter(filteredRooms));
+            }, false);
+        }
     }
 
     //Checks if the time is within the specified range
@@ -177,18 +179,6 @@ public class MainActivity extends AppCompatActivity {
 
     //Loads the list of available rooms for a specified lesson. It makes an API call using Retrofit and updates the UI accordingly
     private void loadRooms(int lesson) {
-
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                .readTimeout(2, TimeUnit.SECONDS)
-                .connectTimeout(2, TimeUnit.SECONDS)
-                .build();
-
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://195.162.83.28")
-                .client(okHttpClient)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
         PolitechSoftService api = retrofit.create(PolitechSoftService.class);
 
         Call<Root> call = api.getRooms("free_rooms_list", lesson, "json", "UTF8", "ok");
