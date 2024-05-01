@@ -8,6 +8,7 @@
     <color name="floorsButtonColor">#484264</color>
     <color name="floorsPressedButtonColor">#6582FF</color>
     <color name="noInternet">#f8c337</color>
+    <color name="apiError">#e51b1f</color>
     <color name="defaultButtonColor">#2f303a</color>
     <color name="pressedButtonColor">#0028d4</color>
     <color name="classButtonRippleColor">#6582FF</color>

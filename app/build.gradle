@@ -8,10 +8,10 @@ android {
 
     defaultConfig {
         applicationId "com.example.roomify"
-        minSdk 31
+        minSdk 30
         targetSdk 34
         versionCode 1
-        versionName "1.2"
+        versionName "1.7"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -13,3 +13,8 @@
 .externalNativeBuild
 .cxx
 local.properties
+/app/src/main/res/drawable-hdpi/ic_action_ukdlogo2.png
+/app/src/main/res/drawable-mdpi/ic_action_ukdlogo2.png
+/app/src/main/res/drawable-xhdpi/ic_action_ukdlogo2.png
+/app/src/main/res/drawable-xxhdpi/ic_action_ukdlogo2.png
+/app/src/main/res/drawable-xxxhdpi/ic_action_ukdlogo2.png
