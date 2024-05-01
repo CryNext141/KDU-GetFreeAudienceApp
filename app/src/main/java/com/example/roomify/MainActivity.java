@@ -16,9 +16,7 @@ import android.icu.text.SimpleDateFormat;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -32,8 +30,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.http.GET;
-import retrofit2.http.Query;
 
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
@@ -55,154 +51,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView noInternetTextView;
     private TextView apiErrorTextView;
 
-    public static class Room {
-        private String name;
-        private String type;
-        private String comment;
-        public String getName() {
-            return name;
-        }
-        public String getType() {
-            return type;
-        }
-        public void setType(String type) {
-            this.type = type;
-        }
-        public String getComment() {
-            return comment;
-        }
-        public void setComment(String comment) {
-            this.comment = comment;
-        }
-    }
-
-    public static class FreeRooms {
-        private String date;
-        private String lesson;
-        private List<Room> rooms;
-        public String getDate() {
-            return date;
-        }
-        public void setDate(String date) {
-            this.date = date;
-        }
-        public String getLesson() {
-            return lesson;
-        }
-        public void setLesson(String lesson) {
-            this.lesson = lesson;
-        }
-        public List<Room> getRooms() {
-            return rooms;
-        }
-        public void setRooms(List<Room> rooms) {
-            this.rooms = rooms;
-        }
-    }
-
-    public static class Error {
-        private String error_message;
-        private String errorcode;
-
-        public String getError_message() {
-            return error_message;
-        }
-
-        public void setError_message(String error_message) {
-            this.error_message = error_message;
-        }
-
-        public String getErrorcode() {
-            return errorcode;
-        }
-
-        public void setErrorcode(String errorcode) {
-            this.errorcode = errorcode;
-        }
-    }
-    public static class PsrozkladExport {
-        private List<FreeRooms> free_rooms;
-        private String code;
-        private Error error;
-        public Error getError() {
-            return error;
-        }
-
-        public void setError(Error error) {
-            this.error = error;
-        }
-        public List<FreeRooms> getFree_rooms() {
-            return free_rooms;
-        }
-        public void setFree_rooms(List<FreeRooms> free_rooms) {
-            this.free_rooms = free_rooms;
-        }
-        public String getCode() {
-            return code;
-        }
-        public void setCode(String code) {
-            this.code = code;
-        }
-    }
-
-    public static class Root {
-        private PsrozkladExport psrozklad_export;
-
-        public PsrozkladExport getPsrozklad_export() {
-            return psrozklad_export;
-        }
-
-        public void setPsrozklad_export(PsrozkladExport psrozklad_export) {
-            this.psrozklad_export = psrozklad_export;
-        }
-    }
-
-    public interface PolitechSoft {
-        @GET("/cgi-bin/timetable_export.cgi")
-        Call<Root> getRooms(@Query("req_type") String req_type,
-                            @Query("lesson") int lesson,
-                            @Query("req_format") String req_format,
-                            @Query("coding_mode") String coding_mode,
-                            @Query("bs") String bs);
-    }
-
-    public static class RoomViewHolder extends RecyclerView.ViewHolder {
-        TextView audience, type, comment;
-
-        public RoomViewHolder(View itemView) {
-            super(itemView);
-            audience = itemView.findViewById(R.id.audience);
-            type = itemView.findViewById(R.id.type);
-            comment = itemView.findViewById(R.id.comment);
-        }
-    }
-
-    public static class RoomAdapter extends RecyclerView.Adapter<RoomViewHolder> {
-        private final List<Room> rooms;
-        public RoomAdapter(List<Room> rooms) {
-            this.rooms = rooms;
-        }
-        @NonNull
-        @Override
-        public RoomViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.room_item, parent, false);
-            return new RoomViewHolder(view);
-        }
-        @Override
-        public void onBindViewHolder(RoomViewHolder holder, int position) {
-            Room room = rooms.get(position);
-            String roomNumber = room.getName().replace("ауд.", "").trim();
-            holder.audience.setText(roomNumber);
-            holder.type.setText(room.getType());
-            holder.comment.setText(room.getComment());
-        }
-
-        @Override
-        public int getItemCount() {
-            return rooms.size();
-        }
-    }
-
     private final BroadcastReceiver networkChangeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -223,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         unregisterReceiver(networkChangeReceiver);
     }
 
-    @SuppressLint("InflateParams")
+    @SuppressLint({"InflateParams", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -259,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         final TextView dateTextView = findViewById(R.id.date);
         final SimpleDateFormat sdf = new SimpleDateFormat("EEEE, d MMMM", new Locale("en","UA"));
         String currentDate = sdf.format(new Date());
-        dateTextView.setText(" Classes for:\n " + currentDate);
+        dateTextView.setText("Classes for:\n " + currentDate);
 
         if (isTimeInRange(currentTime, LocalTime.of(8, 0), LocalTime.of(9, 50))) {
             currentTimeButton = button1;
@@ -320,10 +168,14 @@ public class MainActivity extends AppCompatActivity {
             recyclerView.setAdapter(new RoomAdapter(filteredRooms));
         }, false);
     }
+
+    //Checks if the time is within the specified range
     private boolean isTimeInRange(LocalTime currentTime, LocalTime startTime, LocalTime endTime) {
         return !currentTime.isBefore(startTime) && !currentTime.isAfter(endTime);
     }
 
+
+    //Loads the list of available rooms for a specified lesson. It makes an API call using Retrofit and updates the UI accordingly
     private void loadRooms(int lesson) {
 
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
@@ -337,7 +189,7 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        PolitechSoft api = retrofit.create(PolitechSoft.class);
+        PolitechSoftService api = retrofit.create(PolitechSoftService.class);
 
         Call<Root> call = api.getRooms("free_rooms_list", lesson, "json", "UTF8", "ok");
         call.enqueue(new Callback<Root>() {
@@ -375,7 +227,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-
             @Override
             public void onFailure(@NonNull Call<Root> call, @NonNull Throwable t) {
                 if (t instanceof SocketTimeoutException) {
@@ -385,6 +236,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    //Filters the list of rooms based on the floor number
     private List<Room> filterRoomsByFloor(List<Room> rooms, String floor) {
         List<Room> filteredRooms = new ArrayList<>();
         for (Room room : rooms) {
@@ -400,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
         return filteredRooms;
     }
 
+    //Checks if the network is available
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -407,6 +261,7 @@ public class MainActivity extends AppCompatActivity {
         return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
+    //Updates the UI to reflect the current network connectivity status
     private void updateConnectivityStatus() {
         if (!isNetworkAvailable()) {
             getWindow().setStatusBarColor(ContextCompat.getColor(this, R.color.noInternet));
@@ -416,6 +271,8 @@ public class MainActivity extends AppCompatActivity {
             noInternetTextView.setVisibility(View.GONE);
         }
     }
+
+    //Sets up buttons in the UI and assigns event handlers to them based on whether they are class buttons or filter buttons
     @SuppressLint("ResourceAsColor")
     private void setupButton(int buttonId, Runnable action, boolean isClassButton) {
         MaterialButton button = findViewById(buttonId);
