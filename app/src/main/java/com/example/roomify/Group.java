@@ -1,10 +1,15 @@
 package com.example.roomify;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
+
 public class Group {
+    @SerializedName("name")
     private String name;
+    @SerializedName("ID")
     private String ID;
 
-    // Getters and setters
     public String getName() {
         return name;
     }

@@ -15,21 +15,24 @@ public interface PolitechSoftService {
                                      @Query("bs") String bs);
 
     @GET("/cgi-bin/timetable_export.cgi")
-    Call<List<Group>> getGroups(@Query("req_mode") String req_mode,
-                                @Query("req_type") String req_type,
-                                @Query("show_ID") String show_ID,
-                                @Query("req_format") String req_format,
-                                @Query("coding_mode") String coding_mode);
+    Call<GroupResponse> getGroups(
+            @Query("req_mode") String reqMode,
+            @Query("req_type") String reqType,
+            @Query("show_ID") String showID,
+            @Query("req_format") String reqFormat,
+            @Query("coding_mode") String codingMode
+    );
 
     @GET("/cgi-bin/timetable_export.cgi")
-    Call<List<Schedule>> getSchedule(@Query("req_mode") String req_mode,
-                                     @Query("req_type") String req_type,
-                                     @Query("begin_date") String begin_date,
-                                     @Query("end_date") String end_date,
-                                     @Query("OBJ_ID") String groupId,
-                                     @Query("req_format") String req_format,
-                                     @Query("coding_mode") String coding_mode);
-
-
+    Call<ScheduleResponse> getSchedule(
+            @Query("req_mode") String reqMode,
+            @Query("req_type") String reqType,
+            @Query("begin_date") String beginDate,
+            @Query("end_date") String endDate,
+            @Query("OBJ_ID") String groupId,
+            @Query("req_format") String reqFormat,
+            @Query("coding_mode") String codingMode
+    );
 }
+
 

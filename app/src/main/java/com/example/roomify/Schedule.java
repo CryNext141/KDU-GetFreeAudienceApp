@@ -1,42 +1,76 @@
 package com.example.roomify;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Schedule {
-    // Define the fields according to the API response
-    private String subject;
-    private String time;
-    private String room;
-    private String teacher;
+    @SerializedName("object")
+    private String object;
+    @SerializedName("date")
+    private String date;
+    @SerializedName("comment")
+    private String comment;
+    @SerializedName("lesson_number")
+    private String lessonNumber;
+    @SerializedName("lesson_name")
+    private String lessonName;
+    @SerializedName("lesson_time")
+    private String lessonTime;
+    @SerializedName("lesson_description")
+    private String lessonDescription;
 
-    // Getters and setters
-    public String getSubject() {
-        return subject;
+    public String getObject() {
+        return object;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
+    public void setObject(String object) {
+        this.object = object;
     }
 
-    public String getTime() {
-        return time;
+    public String getDate() {
+        return date;
     }
 
-    public void setTime(String time) {
-        this.time = time;
+    public void setDate(String date) {
+        this.date = date;
     }
 
-    public String getRoom() {
-        return room;
+    public String getComment() {
+        return comment;
     }
 
-    public void setRoom(String room) {
-        this.room = room;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
-    public String getTeacher() {
-        return teacher;
+    public String getLessonNumber() {
+        return lessonNumber;
     }
 
-    public void setTeacher(String teacher) {
-        this.teacher = teacher;
+    public void setLessonNumber(String lessonNumber) {
+        this.lessonNumber = lessonNumber;
+    }
+
+    public String getLessonName() {
+        return lessonName;
+    }
+
+    public void setLessonName(String lessonName) {
+        this.lessonName = lessonName;
+    }
+
+    public String getLessonTime() {
+        return lessonTime;
+    }
+
+    public void setLessonTime(String lessonTime) {
+        this.lessonTime = lessonTime;
+    }
+
+    public String getLessonDescription() {
+        return lessonDescription;
+    }
+
+    public void setLessonDescription(String lessonDescription) {
+        this.lessonDescription = lessonDescription;
     }
 }

@@ -2,6 +2,7 @@ package com.example.roomify;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.widget.Button;
@@ -68,50 +69,82 @@ public class ScheduleActivity extends AppCompatActivity {
     private void fetchGroupIdAndSchedule() {
         String groupName = groupNameEditText.getText().toString();
 
-        Call<List<Group>> call = service.getGroups("group", "obj_list", "yes", "json", "UTF8");
-        call.enqueue(new Callback<List<Group>>() {
+        Call<GroupResponse> call = service.getGroups("group", "obj_list", "yes", "json", "UTF8");
+        Log.d("ScheduleActivity", "Request URL: " + call.request().url());
+
+        call.enqueue(new Callback<GroupResponse>() {
             @Override
-            public void onResponse(Call<List<Group>> call, Response<List<Group>> response) {
+            public void onResponse(Call<GroupResponse> call, Response<GroupResponse> response) {
                 if (response.isSuccessful()) {
-                    List<Group> groups = response.body();
-                    if (groups != null) {
-                        for (Group group : groups) {
-                            if (group.getName().equalsIgnoreCase(groupName)) {
-                                fetchSchedule(group.getID());
-                                break;
+                    GroupResponse groupResponse = response.body();
+                    if (groupResponse != null && groupResponse.getDepartmentData() != null) {
+                        List<GroupResponse.DepartmentData.Department> departments = groupResponse.getDepartmentData().getDepartments();
+                        for (GroupResponse.DepartmentData.Department department : departments) {
+                            List<Group> groups = department.getObjects();
+                            for (Group group : groups) {
+                                if (group.getName().equalsIgnoreCase(groupName)) {
+                                    Log.d("ScheduleActivity", "Group found: " + group.getName());
+                                    fetchSchedule(group.getID());
+                                    return;
+                                }
                             }
                         }
+                    } else {
+                        Log.e("ScheduleActivity", "No groups found");
+                    }
+                } else {
+                    Log.e("ScheduleActivity", "Response not successful: " + response.code() + " " + response.message());
+                    try {
+                        Log.e("ScheduleActivity", "Error body: " + response.errorBody().string());
+                    } catch (Exception e) {
+                        Log.e("ScheduleActivity", "Error parsing error body", e);
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Group>> call, Throwable t) {
-                // Handle failure
+            public void onFailure(Call<GroupResponse> call, Throwable t) {
+                Log.e("ScheduleActivity", "API call failed", t);
             }
         });
     }
 
+
     private void fetchSchedule(String groupId) {
         // Here you can use the current date and add 7 days to get the end date
-        String beginDate = "2024-05-14";  // Example start date
-        String endDate = "2024-05-21";    // Example end date
+        String beginDate = "15.05.2024";  // Example start date
+        String endDate = "30.05.2024";    // Example end date
 
-        Call<List<Schedule>> call = service.getSchedule("group", "rozklad", beginDate, endDate, groupId, "json", "UTF8");
-        call.enqueue(new Callback<List<Schedule>>() {
+        Call<ScheduleResponse> call = service.getSchedule("group", "rozklad", beginDate, endDate, groupId, "json", "UTF8");
+        Log.d("ScheduleActivity", "Request URL: " + call.request().url());
+
+        call.enqueue(new Callback<ScheduleResponse>() {
             @Override
-            public void onResponse(Call<List<Schedule>> call, Response<List<Schedule>> response) {
+            public void onResponse(Call<ScheduleResponse> call, Response<ScheduleResponse> response) {
                 if (response.isSuccessful()) {
-                    List<Schedule> schedules = response.body();
-                    if (schedules != null) {
-                        scheduleAdapter.updateSchedules(schedules);
+                    ScheduleResponse scheduleResponse = response.body();
+                    if (scheduleResponse != null && scheduleResponse.getScheduleData() != null) {
+                        List<Schedule> schedules = scheduleResponse.getScheduleData().getRozItems();
+                        if (schedules != null) {
+                            Log.d("ScheduleActivity", "Schedules fetched: " + schedules.size());
+                            scheduleAdapter.updateSchedules(schedules);
+                        } else {
+                            Log.e("ScheduleActivity", "No schedules found");
+                        }
+                    }
+                } else {
+                    Log.e("ScheduleActivity", "Response not successful: " + response.code() + " " + response.message());
+                    try {
+                        Log.e("ScheduleActivity", "Error body: " + response.errorBody().string());
+                    } catch (Exception e) {
+                        Log.e("ScheduleActivity", "Error parsing error body", e);
                     }
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Schedule>> call, Throwable t) {
-                // Handle failure
+            public void onFailure(Call<ScheduleResponse> call, Throwable t) {
+                Log.e("ScheduleActivity", "API call failed", t);
             }
         });
     }

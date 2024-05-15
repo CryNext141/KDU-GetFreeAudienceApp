@@ -15,24 +15,20 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
 
     private List<Schedule> schedules;
 
-    public ScheduleAdapter(List<Schedule> schedules)     {
+    public ScheduleAdapter(List<Schedule> schedules) {
         this.schedules = schedules;
     }
 
-    @NonNull
     @Override
-    public ScheduleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_schedule, parent, false);
+    public ScheduleViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.schedule_item, parent, false);
         return new ScheduleViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ScheduleViewHolder holder, int position) {
+    public void onBindViewHolder(ScheduleViewHolder holder, int position) {
         Schedule schedule = schedules.get(position);
-        holder.subjectTextView.setText(schedule.getSubject());
-        holder.timeTextView.setText(schedule.getTime());
-        holder.roomTextView.setText(schedule.getRoom());
-        holder.teacherTextView.setText(schedule.getTeacher());
+        holder.bind(schedule);
     }
 
     @Override
@@ -40,24 +36,29 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         return schedules.size();
     }
 
-    public void updateSchedules(List<Schedule> schedules) {
-        this.schedules = schedules;
+    public void updateSchedules(List<Schedule> newSchedules) {
+        schedules.clear();
+        schedules.addAll(newSchedules);
         notifyDataSetChanged();
     }
 
     class ScheduleViewHolder extends RecyclerView.ViewHolder {
 
-        TextView subjectTextView;
-        TextView timeTextView;
-        TextView roomTextView;
-        TextView teacherTextView;
+        private TextView lessonNameTextView;
+        private TextView lessonTimeTextView;
+        private TextView lessonDescriptionTextView;
 
-        public ScheduleViewHolder(@NonNull View itemView) {
+        public ScheduleViewHolder(View itemView) {
             super(itemView);
-            subjectTextView = itemView.findViewById(R.id.subject_text_view);
-            timeTextView = itemView.findViewById(R.id.time_text_view);
-            roomTextView = itemView.findViewById(R.id.room_text_view);
-            teacherTextView = itemView.findViewById(R.id.teacher_text_view);
+            lessonNameTextView = itemView.findViewById(R.id.lesson_name);
+            lessonTimeTextView = itemView.findViewById(R.id.lesson_time);
+            lessonDescriptionTextView = itemView.findViewById(R.id.lesson_description);
+        }
+
+        public void bind(Schedule schedule) {
+            lessonNameTextView.setText(schedule.getLessonName());
+            lessonTimeTextView.setText(schedule.getLessonTime());
+            lessonDescriptionTextView.setText(schedule.getLessonDescription());
         }
     }
 }
