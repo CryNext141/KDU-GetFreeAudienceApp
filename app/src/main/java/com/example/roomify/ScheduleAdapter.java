@@ -42,13 +42,13 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         notifyDataSetChanged();
     }
 
-    class ScheduleViewHolder extends RecyclerView.ViewHolder {
+    public class ScheduleViewHolder extends RecyclerView.ViewHolder {
 
         private TextView lessonNameTextView;
         private TextView lessonTimeTextView;
         private TextView lessonDescriptionTextView;
 
-        public ScheduleViewHolder(View itemView) {
+        public ScheduleViewHolder(@NonNull View itemView) {
             super(itemView);
             lessonNameTextView = itemView.findViewById(R.id.lesson_name);
             lessonTimeTextView = itemView.findViewById(R.id.lesson_time);
@@ -58,7 +58,10 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
         public void bind(Schedule schedule) {
             lessonNameTextView.setText(schedule.getLessonName());
             lessonTimeTextView.setText(schedule.getLessonTime());
-            lessonDescriptionTextView.setText(schedule.getLessonDescription());
+            String cleanDescription = Utils.stripHtmlTags(schedule.getLessonDescription());
+            lessonDescriptionTextView.setText(cleanDescription);
         }
     }
 }
+
+
