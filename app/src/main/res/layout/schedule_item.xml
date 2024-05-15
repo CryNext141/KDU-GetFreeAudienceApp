@@ -5,6 +5,19 @@
     android:orientation="vertical"
     android:padding="8dp">
 
+
+    <TextView
+        android:id="@+id/dateTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:textSize="18sp"
+        android:textColor="@color/MainColor"
+        android:textStyle="bold"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="4dp"/>
+
     <TextView
         android:id="@+id/lesson_name"
         android:layout_width="wrap_content"

@@ -44,7 +44,7 @@ public class ScheduleActivity extends AppCompatActivity {
         scheduleRecyclerView = findViewById(R.id.recyclerView);
 
         scheduleRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        scheduleAdapter = new ScheduleAdapter(new ArrayList<>());
+        scheduleAdapter = new ScheduleAdapter(new ArrayList<>(), new ArrayList<>());
         scheduleRecyclerView.setAdapter(scheduleAdapter);
 
         Retrofit retrofit = new Retrofit.Builder()
@@ -127,7 +127,7 @@ public class ScheduleActivity extends AppCompatActivity {
                         List<Schedule> schedules = scheduleResponse.getScheduleData().getRozItems();
                         if (schedules != null) {
                             Log.d("ScheduleActivity", "Schedules fetched: " + schedules.size());
-                            scheduleAdapter.updateSchedules(schedules);
+                            scheduleAdapter.updateSchedules(new ArrayList<>(schedules));
                         } else {
                             Log.e("ScheduleActivity", "No schedules found");
                         }
