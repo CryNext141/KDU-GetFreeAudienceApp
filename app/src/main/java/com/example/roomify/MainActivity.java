@@ -16,9 +16,13 @@ import android.icu.text.SimpleDateFormat;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,10 +36,10 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.net.SocketTimeoutException;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.time.LocalTime;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -50,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     MaterialButton currentTimeButton = null;
     private TextView noInternetTextView;
     private TextView apiErrorTextView;
+    private GestureDetector gestureDetector;
+
     private final OkHttpClient okHttpClient = new OkHttpClient.Builder()
             .readTimeout(2, TimeUnit.SECONDS)
             .connectTimeout(2, TimeUnit.SECONDS)
@@ -84,6 +90,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        gestureDetector = new GestureDetector(new SwipeGestureDetector());
+
         allRooms = new ArrayList<>();
 
         noInternetTextView = findViewById(R.id.noInternetTextView);
@@ -91,7 +99,6 @@ public class MainActivity extends AppCompatActivity {
 
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         LocalTime currentTime = LocalTime.now();
-
 
         Window window = getWindow();
         window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
@@ -110,7 +117,6 @@ public class MainActivity extends AppCompatActivity {
         MaterialButton button4 = findViewById(R.id.button4);
         MaterialButton button5 = findViewById(R.id.button5);
         MaterialButton button6 = findViewById(R.id.button6);
-
 
         final TextView dateTextView = findViewById(R.id.date);
         final SimpleDateFormat sdf = new SimpleDateFormat("EEEE, d MMMM", new Locale("en","UA"));
@@ -141,7 +147,6 @@ public class MainActivity extends AppCompatActivity {
             currentTimeButton.setTextColor(Color.argb(255, 94,103,163));
         }
 
-
         setupButton(R.id.button1, () -> loadRooms(1), true);
         setupButton(R.id.button2, () -> loadRooms(2), true);
         setupButton(R.id.button3, () -> loadRooms(3), true);
@@ -171,11 +176,15 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return gestureDetector.onTouchEvent(event) || super.onTouchEvent(event);
+    }
+
     //Checks if the time is within the specified range
     private boolean isTimeInRange(LocalTime currentTime, LocalTime startTime, LocalTime endTime) {
         return !currentTime.isBefore(startTime) && !currentTime.isAfter(endTime);
     }
-
 
     //Loads the list of available rooms for a specified lesson. It makes an API call using Retrofit and updates the UI accordingly
     private void loadRooms(int lesson) {
@@ -185,7 +194,6 @@ public class MainActivity extends AppCompatActivity {
         call.enqueue(new Callback<Root>() {
             @Override
             public void onResponse(@NonNull Call<Root> call, @NonNull Response<Root> response) {
-
                 apiErrorTextView.setVisibility(View.GONE);
                 getWindow().setStatusBarColor(ContextCompat.getColor(MainActivity.this, R.color.MainColor));
 
@@ -193,9 +201,7 @@ public class MainActivity extends AppCompatActivity {
                 assert root != null;
 
                 if (root.getPsrozklad_export().getError() != null) {
-                    String errorMessage = root.getPsrozklad_export().getError().getError_message();
-                    String errorCode = root.getPsrozklad_export().getError().getErrorcode();
-                    Toast.makeText(MainActivity.this, "Error: " + errorMessage + ", code: " + errorCode, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this, "Service Temporarily Unavailable", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -213,7 +219,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                     recyclerView.setAdapter(new RoomAdapter(allRooms));
                 } else {
-                    Toast.makeText(MainActivity.this, "No free rooms", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "No Free Rooms", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -297,4 +303,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    private class SwipeGestureDetector extends GestureDetector.SimpleOnGestureListener {
+        private static final int SWIPE_MIN_DISTANCE = 15;
+        private static final int SWIPE_THRESHOLD_VELOCITY = 30;
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+                // Right to left swipe, start ScheduleActivity
+                Intent intent = new Intent(MainActivity.this, ScheduleActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
+                return true;
+            }
+            return false;
+        }
+    }
+
 }
+
