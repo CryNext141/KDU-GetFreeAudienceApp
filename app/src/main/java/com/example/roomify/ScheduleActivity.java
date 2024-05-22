@@ -160,6 +160,7 @@ public class ScheduleActivity extends AppCompatActivity {
                 Intent intent = new Intent(ScheduleActivity.this, MainActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                //testComment
 
                 return true;
             }
