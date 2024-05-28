@@ -1,5 +1,6 @@
 package com.example.roomify;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,6 +32,7 @@ public class ScheduleActivity extends AppCompatActivity {
     private GestureDetector gestureDetector;
 
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,6 +57,9 @@ public class ScheduleActivity extends AppCompatActivity {
         service = retrofit.create(PolitechSoftService.class);
 
         fetchScheduleButton.setOnClickListener(v -> fetchGroupIdAndSchedule());
+
+        scheduleRecyclerView.setOnTouchListener((v, event) -> gestureDetector.onTouchEvent(event));
+
     }
 
     @Override
@@ -111,9 +116,8 @@ public class ScheduleActivity extends AppCompatActivity {
 
 
     private void fetchSchedule(String groupId) {
-        // Here you can use the current date and add 7 days to get the end date
-        String beginDate = "15.05.2024";  // Example start date
-        String endDate = "30.05.2024";    // Example end date
+        String beginDate = "15.05.2024";
+        String endDate = "30.05.2024";
 
         Call<ScheduleResponse> call = service.getSchedule("group", "rozklad", beginDate, endDate, groupId, "json", "UTF8");
         Log.d("ScheduleActivity", "Request URL: " + call.request().url());
@@ -150,7 +154,7 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
     private class SwipeGestureDetector extends GestureDetector.SimpleOnGestureListener {
-        private static final int SWIPE_MIN_DISTANCE = 15;
+        private static final int SWIPE_MIN_DISTANCE = 170;
         private static final int SWIPE_THRESHOLD_VELOCITY = 30;
 
         @Override
@@ -160,7 +164,6 @@ public class ScheduleActivity extends AppCompatActivity {
                 Intent intent = new Intent(ScheduleActivity.this, MainActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-                //testComment1
 
                 return true;
             }
