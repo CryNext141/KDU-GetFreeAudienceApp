@@ -3,24 +3,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/MainColor"
     tools:context=".ScheduleActivity">
 
     <EditText
         android:id="@+id/group_name_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Enter group name" />
+        android:hint="@string/enter_group_name"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        android:padding="10dp"
+        android:background="@drawable/rounded_corners"
+        android:autofillHints="" />
 
-    <Button
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/fetch_schedule_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Fetch Schedule" />
+        app:backgroundTint="#2f303a"
+        android:textColor="@color/textColors"
+        app:rippleColor="@color/classButtonRippleColor"
+        app:cornerRadius="20dp"
+        android:text="@string/show_schedule"
+        android:layout_gravity="center"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        android:layout_margin="20dp"
+        android:background="@drawable/rounded_corners" />
+
 
 </LinearLayout>

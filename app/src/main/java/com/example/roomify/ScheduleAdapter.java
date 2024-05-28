@@ -38,10 +38,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
     public void onBindViewHolder(@NonNull ScheduleViewHolder holder, int position) {
         Schedule currentSchedule = schedules.get(position);
         holder.bind(currentSchedule);
-        holder.lessonNameTextView.setText(currentSchedule.getLessonName());
-        holder.lessonTimeTextView.setText(currentSchedule.getLessonTime());
-        holder.lessonDescriptionTextView.setText(stripHtmlTags(currentSchedule.getLessonDescription()));
-
 
         if (isFirstLessonForDay(position)) {
             holder.dateTextView.setText(formatDate(currentSchedule.getDate()));
@@ -50,6 +46,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
             holder.dateTextView.setVisibility(View.GONE);
         }
     }
+
 
     private boolean isFirstLessonForDay(int position) {
         if (position == 0) {
@@ -102,7 +99,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
 
     private String formatDate(String date) {
         SimpleDateFormat inputFormat = new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault());
-        SimpleDateFormat outputFormat = new SimpleDateFormat("dd.MM.yyyy EEEE", Locale.getDefault());
+        SimpleDateFormat outputFormat = new SimpleDateFormat("EEEE, dd.MM.yyyy", Locale.getDefault());
         try {
             Date inputDate = inputFormat.parse(date);
             return outputFormat.format(inputDate);
@@ -115,7 +112,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
     }
 
     public class ScheduleViewHolder extends RecyclerView.ViewHolder {
-
         private TextView lessonNameTextView;
         private TextView lessonTimeTextView;
         private TextView lessonDescriptionTextView;
@@ -127,12 +123,13 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
             lessonTimeTextView = itemView.findViewById(R.id.lesson_time);
             lessonDescriptionTextView = itemView.findViewById(R.id.lesson_description);
             dateTextView = itemView.findViewById(R.id.dateTextView);
-
         }
 
         public void bind(Schedule schedule) {
-            lessonNameTextView.setText(schedule.getLessonName());
+            String lessonNameWithClass = "Class " + schedule.getLessonName();
+            lessonNameTextView.setText(lessonNameWithClass);
             lessonTimeTextView.setText(schedule.getLessonTime());
+            lessonDescriptionTextView.setText(stripHtmlTags(schedule.getLessonDescription()));
         }
     }
 }

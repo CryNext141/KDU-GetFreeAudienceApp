@@ -20,4 +20,9 @@
     <string name="api_failure">API failure</string>
     <string name="no_internet">No internet</string>
     <string name="title_activity_schedule">ScheduleActivity</string>
+    <string name="lesson_time">Lesson Time</string>
+    <string name="lesson_number">Lesson Number</string>
+    <string name="lesson_description">Lesson Description</string>
+    <string name="show_schedule">Show Schedule</string>
+    <string name="enter_group_name">Enter group name</string>
 </resources>

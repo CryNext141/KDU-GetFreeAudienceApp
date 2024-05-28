@@ -6,15 +6,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -30,6 +36,10 @@ public class ScheduleActivity extends AppCompatActivity {
     private RecyclerView scheduleRecyclerView;
     private ScheduleAdapter scheduleAdapter;
     private GestureDetector gestureDetector;
+    private LocalDateTime beginDate;
+    private LocalDateTime endDate;
+    private DateTimeFormatter dtf;
+
 
 
     @SuppressLint("ClickableViewAccessibility")
@@ -40,6 +50,10 @@ public class ScheduleActivity extends AppCompatActivity {
 
         gestureDetector = new GestureDetector(this, new SwipeGestureDetector());
 
+        Window window = getWindow();
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        window.setStatusBarColor(ContextCompat.getColor(this, R.color.HeaderColor));
 
         groupNameEditText = findViewById(R.id.group_name_edit_text);
         fetchScheduleButton = findViewById(R.id.fetch_schedule_button);
@@ -72,7 +86,7 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
     private void fetchGroupIdAndSchedule() {
-        String groupName = groupNameEditText.getText().toString();
+        String groupName = groupNameEditText.getText().toString().replace(" ", "");
 
         Call<GroupResponse> call = service.getGroups("group", "obj_list", "yes", "json", "UTF8");
         Log.d("ScheduleActivity", "Request URL: " + call.request().url());
@@ -116,10 +130,16 @@ public class ScheduleActivity extends AppCompatActivity {
 
 
     private void fetchSchedule(String groupId) {
-        String beginDate = "15.05.2024";
-        String endDate = "30.05.2024";
 
-        Call<ScheduleResponse> call = service.getSchedule("group", "rozklad", beginDate, endDate, groupId, "json", "UTF8");
+        beginDate = LocalDateTime.now();
+        endDate = beginDate.plusDays(7);
+
+        dtf = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+        String beginFormatDateTime = beginDate.format(dtf);
+        String endFormatDate = endDate.format(dtf);
+
+        Call<ScheduleResponse> call = service.getSchedule("group", "rozklad", beginFormatDateTime, endFormatDate, groupId, "json", "UTF8");
         Log.d("ScheduleActivity", "Request URL: " + call.request().url());
 
         call.enqueue(new Callback<ScheduleResponse>() {
@@ -154,8 +174,8 @@ public class ScheduleActivity extends AppCompatActivity {
     }
 
     private class SwipeGestureDetector extends GestureDetector.SimpleOnGestureListener {
-        private static final int SWIPE_MIN_DISTANCE = 170;
-        private static final int SWIPE_THRESHOLD_VELOCITY = 30;
+        private static final int SWIPE_MIN_DISTANCE = 300;
+        private static final int SWIPE_THRESHOLD_VELOCITY = 300;
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
