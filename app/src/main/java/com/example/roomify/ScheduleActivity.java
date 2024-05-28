@@ -75,7 +75,6 @@ public class ScheduleActivity extends AppCompatActivity {
         String groupName = groupNameEditText.getText().toString();
 
         Call<GroupResponse> call = service.getGroups("group", "obj_list", "yes", "json", "UTF8");
-        Log.d("ScheduleActivity", "Request URL: " + call.request().url());
 
         call.enqueue(new Callback<GroupResponse>() {
             @Override
@@ -88,21 +87,11 @@ public class ScheduleActivity extends AppCompatActivity {
                             List<Group> groups = department.getObjects();
                             for (Group group : groups) {
                                 if (group.getName().equalsIgnoreCase(groupName)) {
-                                    Log.d("ScheduleActivity", "Group found: " + group.getName());
                                     fetchSchedule(group.getID());
                                     return;
                                 }
                             }
                         }
-                    } else {
-                        Log.e("ScheduleActivity", "No groups found");
-                    }
-                } else {
-                    Log.e("ScheduleActivity", "Response not successful: " + response.code() + " " + response.message());
-                    try {
-                        Log.e("ScheduleActivity", "Error body: " + response.errorBody().string());
-                    } catch (Exception e) {
-                        Log.e("ScheduleActivity", "Error parsing error body", e);
                     }
                 }
             }
@@ -120,8 +109,6 @@ public class ScheduleActivity extends AppCompatActivity {
         String endDate = "30.05.2024";
 
         Call<ScheduleResponse> call = service.getSchedule("group", "rozklad", beginDate, endDate, groupId, "json", "UTF8");
-        Log.d("ScheduleActivity", "Request URL: " + call.request().url());
-
         call.enqueue(new Callback<ScheduleResponse>() {
             @Override
             public void onResponse(Call<ScheduleResponse> call, Response<ScheduleResponse> response) {
@@ -130,18 +117,8 @@ public class ScheduleActivity extends AppCompatActivity {
                     if (scheduleResponse != null && scheduleResponse.getScheduleData() != null) {
                         List<Schedule> schedules = scheduleResponse.getScheduleData().getRozItems();
                         if (schedules != null) {
-                            Log.d("ScheduleActivity", "Schedules fetched: " + schedules.size());
                             scheduleAdapter.updateSchedules(new ArrayList<>(schedules));
-                        } else {
-                            Log.e("ScheduleActivity", "No schedules found");
                         }
-                    }
-                } else {
-                    Log.e("ScheduleActivity", "Response not successful: " + response.code() + " " + response.message());
-                    try {
-                        Log.e("ScheduleActivity", "Error body: " + response.errorBody().string());
-                    } catch (Exception e) {
-                        Log.e("ScheduleActivity", "Error parsing error body", e);
                     }
                 }
             }

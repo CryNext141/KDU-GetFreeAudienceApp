@@ -16,7 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-// ScheduleAdapter.java
+
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder> {
 
     private ArrayList<Schedule> schedules;
@@ -38,27 +38,27 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.Schedu
     @Override
     public void onBindViewHolder(@NonNull ScheduleViewHolder holder, int position) {
         Schedule currentSchedule = schedules.get(position);
-        holder.bind(currentSchedule); // Передача поточного розкладу до методу bind()
+        holder.bind(currentSchedule);
         holder.lessonNameTextView.setText(currentSchedule.getLessonName());
         holder.lessonTimeTextView.setText(currentSchedule.getLessonTime());
         holder.lessonDescriptionTextView.setText(stripHtmlTags(currentSchedule.getLessonDescription()));
 
-        // Перевірка, чи є це перше заняття для цього дня
+
         if (isFirstLessonForDay(position)) {
             holder.dateTextView.setText(formatDate(currentSchedule.getDate()));
-            holder.dateTextView.setVisibility(View.VISIBLE); // Показати дату
+            holder.dateTextView.setVisibility(View.VISIBLE);
         } else {
-            holder.dateTextView.setVisibility(View.GONE); // Приховати дату
+            holder.dateTextView.setVisibility(View.GONE);
         }
     }
 
     private boolean isFirstLessonForDay(int position) {
         if (position == 0) {
-            return true; // Перша позиція завжди є першою для свого дня
+            return true;
         } else {
             String currentDate = schedules.get(position).getDate();
             String previousDate = schedules.get(position - 1).getDate();
-            return !currentDate.equals(previousDate); // Перевіряємо, чи поточна дата відрізняється від попередньої
+            return !currentDate.equals(previousDate);
         }
     }
     public void setCurrentDate(String currentDate) {
